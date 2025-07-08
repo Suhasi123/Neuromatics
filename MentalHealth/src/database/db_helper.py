@@ -71,7 +71,7 @@ class DBHelper:
         user = cursor.fetchone()
         conn.close()
 
-        if user and check_password_hash(user[2], password):  # Assuming password is stored in the 3rd column
+        if user and check_password_hash(user[2], password):  
             return user
         return None
 
