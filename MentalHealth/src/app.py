@@ -1,0 +1,226 @@
+# src/app.py
+from flask import Flask, render_template, request, redirect, url_for, flash, session, g, jsonify, Response
+from database.db_helper import DBHelper
+import sqlite3
+from werkzeug.security import generate_password_hash, check_password_hash
+import chatbot as ch
+import numpy as np
+
+app = Flask(_name_)
+app.secret_key = 'e5b0b6ce3b7b2b3e8f2c9c5c4b6a7d9a2e3c4e5f6a7b8c9d'  # Replace with a strong secret key
+
+def get_db():
+    if 'db' not in g:
+        g.db = DBHelper()
+    return g.db
+
+@app.teardown_appcontext
+def close_db(exception):
+    db = g.pop('db', None)
+    if db is not None:
+        db.create_connection().close()
+
+@app.route('/')
+def index():
+    if 'user_id' in session:
+        return redirect(url_for('profile'))
+    return redirect(url_for('login3'))
+
+@app.route('/login3', methods=['GET', 'POST'])
+def login3():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = get_db().get_user(username, password)
+        if user:
+            session['user_id'] = user[0]  # Store user ID in session
+            session['username'] = user[1]  # Store username in session
+            flash(f"User {username} logged in successfully.", 'success')
+            return redirect(url_for('profile'))
+        else:
+            flash('Invalid username or password', 'error')
+    return render_template('login3.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register2():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        name = request.form['name']
+        age = request.form['age']
+        gender = request.form['gender']
+        education = request.form['education']
+        dob = request.form['dob']
+        try:
+            get_db().create_user(username, password, name, age, gender, education, dob)
+            flash('Account created successfully!', 'success')
+            return redirect(url_for('login3'))
+        except sqlite3.IntegrityError:
+            flash('Username already exists', 'error')
+    return render_template('register2.html')
+
+@app.route('/profile')
+def profile():
+    if 'user_id' not in session:
+        return redirect(url_for('login3'))
+    
+    user = get_db().get_user_by_id(session['user_id'])
+    if user is None:
+        flash('User not found', 'error')
+        return redirect(url_for('login3'))
+
+    user_data = {
+        'username': user[1],
+        'name': user[3],
+        'age': user[4],
+        'gender': user[5],
+        'education': user[6],
+        'dob': user[7]
+    }
+    return render_template('profile.html', user=user_data)
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login3'))
+
+@app.route('/mood-tracker', methods=['GET', 'POST'])
+def mood_tracker():
+    if request.method == 'POST':
+        mood = request.form['mood']
+        note = request.form['note']
+        get_db().insert_mood(mood, note)
+        flash('Mood saved successfully!', 'success')
+        return redirect(url_for('mood_tracker'))
+    return render_template('mood_tracker.html')
+
+@app.route('/chatbot', methods=['GET', 'POST'])
+def chatbot_route():  # Renamed to avoid conflict
+    user_input = ""
+    response = ""
+    
+    if request.method == 'POST':
+        user_input = request.form['user_input']
+        response = ch.get_chatbot_response(user_input)
+        return jsonify({"response": response})
+
+    return render_template('chatbot.html', user_input=user_input, response=response)
+
+
+@app.route('/visualization')
+def visualization():
+    mood_data = get_db().get_mood_data()
+    return render_template('visualization.html', mood_data=mood_data)
+
+@app.route('/mindfulness')
+def mindfulness():
+    return render_template('mindfulness.html')
+
+@app.route('/resources')
+def resources():
+    return render_template('resources.html')
+
+
+# from emotion_detector import EmotionDetector
+# import os
+# import uuid
+
+# import cv2
+
+# from flask_cors import CORS
+# CORS(app)
+
+#   # Enable CORS for the entire app
+# detector = EmotionDetector()
+
+
+# # Route for the emotion detection page
+# @app.route('/emotion-detection')
+# def emotion_detection():
+#     return render_template('emotion_detection.html')
+
+# # Video feed endpoint
+# # @app.route('/video-feed')
+# # def video_feed():
+# #     return Response(generate_frames(), 
+# #                    mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+# @app.route('/video_feed')
+# def video_feed():
+#     def generate():
+#         cap = cv2.VideoCapture(0)
+#         while True:
+#             success, frame = cap.read()
+#             if not success:
+#                 break
+#             processed_frame, _ = detector.process_frame(frame)
+#             ret, buffer = cv2.imencode('.jpg', processed_frame)
+#             frame_bytes = buffer.tobytes()
+#             yield (b'--frame\r\n'
+#                    b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+#         cap.release()
+#     return Response(generate(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+# # def generate_frames():
+# # #     cap = cv2.VideoCapture(0)
+# # #     while True:
+# # #         success, frame = cap.read()
+# # #         if not success:
+# # #             break
+        
+# # #         # Process frame
+# # #         processed_frame, _ = detector.process_frame(frame)
+        
+# # #         # Encode frame
+# # #         ret, buffer = cv2.imencode('.jpg', processed_frame)
+# # #         frame_bytes = buffer.tobytes()
+        
+# # #         yield (b'--frame\r\n'
+# # #                b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+# # import base64
+# # @app.route('/process-frame', methods=['POST'])                                                                                                                                                                                              
+
+# # def process_frame():
+# #     try:
+# #         data = request.get_json()
+# #         header, encoded = data['frame'].split(",", 1)
+#         frame = cv2.imdecode(np.frombuffer(base64.b64decode(encoded)), cv2.IMREAD_COLOR)
+#         processed_frame, analysis = detector.process_frame(frame)
+#         _, buffer = cv2.imencode('.jpg', processed_frame)
+#         return jsonify({
+#             'faces': analysis,
+#             'processed_frame': f"data:image/jpeg;base64,{base64.b64encode(buffer).decode()}"
+#         })
+#     except Exception as e:
+#         return jsonify({'error': str(e)}), 500
+
+# # Image upload endpoint
+# @app.route('/upload', methods=['POST'])
+# def upload_image():
+#     if 'file' not in request.files:
+#         return jsonify({'error': 'No file uploaded'}), 400
+    
+#     file = request.files['file']
+#     if file.filename == '':
+#         return jsonify({'error': 'No selected file'}), 400
+    
+#     # Save uploaded file
+#     filename = f"{uuid.uuid4()}.jpg"
+#     save_path = os.path.join('static', 'uploads', filename)
+#     file.save(save_path)
+    
+#     # Process image
+#     image = cv2.imread(save_path)
+#     processed_image, results = detector.process_frame(image)
+#     cv2.imwrite(save_path, processed_image)
+    
+#     return jsonify({
+#         'image_url': f'/static/uploads/{filename}',
+#         'analysis': results
+#     })
+
+
+if _name_ == '_main_':
+    app.run(debug=True)
