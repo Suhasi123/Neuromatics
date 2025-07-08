@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .login-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            width: 380px;
+            padding: 2rem;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #5a3b8b;
+        }
+        
+        .login-header h2 {
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .login-header h2:after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            bottom: -8px;
+            left: 25%;
+            border-radius: 10px;
+        }
+        
+        .form-control {
+            border-radius: 10px;
+            padding: 0.7rem 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid #ddd;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control:focus {
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
+            border-color: #667eea;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 0.3rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.2rem;
+            position: relative;
+            opacity: 0;
+            transform: translateX(-10px);
+        }
+        
+        #username-group {
+            animation: slideInRight 0.5s ease-out 0.3s forwards;
+        }
+        
+        #password-group {
+            animation: slideInRight 0.5s ease-out 0.5s forwards;
+        }
+        
+        .btn-login {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 10px;
+            padding: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(118, 75, 162, 0.4);
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUp 0.5s ease-out 0.7s forwards;
+        }
+        
+        .btn-login:hover {
+            background: linear-gradient(90deg, #5a72d8, #6a3d96);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(118, 75, 162, 0.5);
+        }
+        
+        .btn-login:active {
+            transform: translateY(0);
+        }
+        
+        .signup-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #666;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out 0.9s forwards;
+        }
+        
+        .signup-link a {
+            color: #667eea;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .signup-link a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .input-icon {
+            position: absolute;
+            right: 12px;
+            top: 38px;
+            color: #888;
+        }
+        
+        /* Floating label effect */
+        .form-floating > .form-control {
+            padding-top: 1.625rem;
+            padding-bottom: 0.625rem;
+        }
+        
+        .form-floating > .form-control:focus ~ label,
+        .form-floating > .form-control:not(:placeholder-shown) ~ label {
+            opacity: 0.65;
+            transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="login-header">
+            <h2>Welcome Back</h2>
+        </div>
+        <form method="post" action="{{ url_for('login3') }}">
+            <div class="form-group form-floating" id="username-group">
+                <input type="text" id="username" name="username" class="form-control" placeholder=" " required>
+                <label for="username" class="form-label">Username</label>
+                <svg class="input-icon" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                </svg>
+            </div>
+            <div class="form-group form-floating" id="password-group">
+                <input type="password" id="password" name="password" class="form-control" placeholder=" " required>
+                <label for="password" class="form-label">Password</label>
+                <svg class="input-icon" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M3.5 11.5a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0zM7 6.5C8.93 6.5 10.5 8.07 10.5 10S8.93 13.5 7 13.5 3.5 11.93 3.5 10 5.07 6.5 7 6.5zM7 8.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
+                    <path d="M5.8 1.5a2.7 2.7 0 0 1 4.4 0l.77 1.28A2 2 0 0 1 10 4.66v1.09a3.5 3.5 0 0 0-6 0V4.66a2 2 0 0 1-1-1.88l.8-1.28z"/>
+                </svg>
+            </div>
+            <button type="submit" class="btn btn-login btn-primary w-100">Sign In</button>
+        </form>
+        <div class="signup-link">
+            <p>Don't have an account? <a href="{{ url_for('register2') }}">Sign up</a></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('form');
+            const button = document.querySelector('.btn-login');
+            
+            // Add button press animation
+            button.addEventListener('mousedown', () => {
+                button.style.transform = 'scale(0.95)';
+            });
+            
+            button.addEventListener('mouseup', () => {
+                button.style.transform = 'scale(1)';
+            });
+            
+            // Add form submit animation
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                button.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Signing in...';
+                button.disabled = true;
+                
+                // Simulate form submission (remove in production)
+                setTimeout(() => {
+                    form.submit();
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+</html>
