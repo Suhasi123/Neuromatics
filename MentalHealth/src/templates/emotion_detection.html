@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Real-Time Emotion Detection</h1>
+    
+    <!-- Webcam Section -->
+    <div class="webcam-container">
+        <video id="webcam" width="640" height="480" autoplay muted></video>
+        <canvas id="canvas" style="display: none;"></canvas>
+        <div id="emotion-display" class="emotion-label"></div>
+        <button onclick="processVideo()" class="btn">Start Webcam</button>
+    </div>
+
+    <!-- Image Upload Section -->
+    <div class="upload-section">
+        <h3>Or Upload an Image</h3>
+        <input type="file" id="imageInput" accept="image/*">
+        <button onclick="uploadImage()" class="btn">Analyze Image</button>
+        <div id="imageResult"></div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/webcam.js') }}"></script>
+{% endblock %}
