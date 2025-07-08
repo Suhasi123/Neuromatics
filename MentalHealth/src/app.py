@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import chatbot as ch
 import numpy as np
 
-app = Flask(_name_)
+app = Flask(__name__)
 app.secret_key = 'e5b0b6ce3b7b2b3e8f2c9c5c4b6a7d9a2e3c4e5f6a7b8c9d'  # Replace with a strong secret key
 
 def get_db():
@@ -222,5 +222,5 @@ def resources():
 #     })
 
 
-if _name_ == '_main_':
+if __name__ == '_main_':
     app.run(debug=True)
