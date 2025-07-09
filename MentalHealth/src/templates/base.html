@@ -3,321 +3,238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mental Health App</title>
+    <title>Mental Health App - Sidebar Version</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-		body {
-			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-			background-color: #f4f7f6;
-			color: #333;
-			margin: 0;
-			line-height: 1.6;
-		}
-
-		.container {
-			max-width: 960px;
-			margin: 20px auto;
-			padding: 0 20px;
-		}
-
-		/* Navigation Bar */
-		nav {
-			background-color: #ffffff;
-			padding: 1rem 2rem;
-			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-			border-bottom: 1px solid #e0e0e0;
-			position: relative; /* Needed for positioning the dropdown */
-		}
-
-		nav ul {
-			list-style-type: none;
-			margin: 0;
+        body {
+            margin: 0;
 			padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+
+		/* Topbar */
+		.topbar {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 60px;
+			background-color:#2F3E46;
+			color: white;
 			display: flex;
-			justify-content: flex-end;
 			align-items: center;
+			z-index: 2000;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 		}
 
-		nav ul li {
-			margin-left: 20px;
-			position: relative; /* For dropdown positioning */
+		.topbar-content {
+			width: 100%;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 15px 20px;
 		}
 
-		nav ul li a {
-			text-decoration: none;
-			color: #555;
+		.project-title{
+			font-size: 25px;
 			font-weight: 500;
-			padding: 8px 12px;
+		}
+
+		.project-title i {
+			margin-right: 10px;
+			color: white;
+			font-size: 25;
+			vertical-align: middle;
+		}
+
+
+		.logout-btn {
+			background-color: white;
+			color: #2F3E46;
+			padding: 8px 16px;
 			border-radius: 6px;
-			transition: background-color 0.3s, color 0.3s;
-			display: block;
-		}
-
-		nav ul li a:hover, nav ul li a.active {
-			background-color: #e8f5e9; /* A light green for hover */
-			color: #2e7d32; /* A darker green for text */
-		}
-
-		.nav-toggle {
-			display: none; /* Hidden on desktop */
-			font-size: 24px;
-			color: #555;
 			text-decoration: none;
-			position: absolute;
-			right: 20px;
-			top: 15px;
+			font-weight: 600;
+			transition: 0.3s ease;
 		}
 
-		/* Dropdown Styles */
-        .dropbtn {
+		.logout-btn:hover {
+			background-color: #f1f1f1;
+		}
+
+        nav {
+            position: fixed;
+            top: 40px;
+            left: 0;
+            height: 100vh;
+            width: 220px;
+            background: linear-gradient(135deg, #91b3ce 30%, #82bacf 100%);
+            padding-top: 30px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        nav ul li {
+            margin: 5px 0;
+        }
+
+        nav ul li a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        nav ul li a:hover,
+        nav ul li a.active {
+            background-color: #e8f5e9;
+            color: #2F3E46;
+        }
+
+        .dropdown .dropbtn {
             display: flex;
             align-items: center;
+            cursor: pointer;
+            width: 100%;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: background 0.3s ease;
         }
 
         .arrow {
-            border: solid #555;
+            border: solid #fff;
             border-width: 0 2px 2px 0;
             display: inline-block;
             padding: 3px;
             margin-left: 8px;
             transform: rotate(45deg);
-            -webkit-transform: rotate(45deg);
-            transition: transform 0.3s ease;
         }
 
-		.dropdown-content {
-			display: none;
-			position: absolute;
-			background-color: #f9f9f9;
-			min-width: 160px;
-			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-			z-index: 1;
-			border-radius: 6px;
-		}
-
-		.dropdown-content a {
-			color: black;
-			padding: 12px 16px;
-			text-decoration: none;
-			display: block;
-			text-align: left;
-		}
-
-		.dropdown-content a:hover {
-			background-color: #f1f1f1;
-		}
-
-		.dropdown:hover .dropdown-content {
-			display: block;
-		}
-        
-        .dropdown:hover .arrow {
-            transform: rotate(-135deg);
-            -webkit-transform: rotate(-135deg);
+        .dropdown-content {
+            display: none;
+            flex-direction: column;
+            padding-left: 20px;
         }
 
-		/* Flash Messages */
-		.flash {
-			padding: 15px;
-			margin-bottom: 20px;
-			border-radius: 8px;
-			font-weight: 500;
-			text-align: center;
-		}
+        .dropdown:hover .dropdown-content {
+            display: flex;
+        }
 
-		.flash.success {
-			background-color: #d4edda;
-			color: #155724;
-			border: 1px solid #c3e6cb;
-		}
+        .dropdown-content a {
+            padding: 6px 0;
+            color: #e0f7fa;
+            font-size: 0.95rem;
+        }
 
-		.flash.error {
-			background-color: #f8d7da;
-			color: #721c24;
-			border: 1px solid #f5c6cb;
-		}
+        .container {
+            margin-left: 240px;
+			padding: 20px;
+			margin-top: 60px;
+        }
 
-		/* Form Styling */
-		form {
-			background: #ffffff;
-			padding: 30px;
-			border-radius: 12px;
-			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-			margin-top: 20px;
-		}
+        .flash {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+        }
 
-		form h2 {
-			margin-top: 0;
-			margin-bottom: 20px;
-			color: #333;
-		}
+        .flash.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
 
-		.form-group {
-			margin-bottom: 20px;
-		}
+        .flash.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
 
-		.form-group label {
-			display: block;
-			margin-bottom: 8px;
-			font-weight: 600;
-			color: #555;
-		}
-
-		input[type="text"],
-		input[type="password"],
-		input[type="email"],
-		input[type="date"],
-		input[type="number"],
-		textarea,
-		select {
-			width: 100%;
-			padding: 12px;
-			border: 1px solid #ccc;
-			border-radius: 8px;
-			box-sizing: border-box; /* Important for padding and width */
-			transition: border-color 0.3s;
-		}
-
-		input[type="text"]:focus,
-		input[type="password"]:focus,
-		textarea:focus,
-		select:focus {
-			border-color: #4CAF50; /* Highlight color */
-			outline: none;
-		}
-
-		textarea {
-			resize: vertical;
-			min-height: 100px;
-		}
-
-		/* Button Styling */
-		button, input[type="submit"] {
-			background-color: #4CAF50; /* Primary button color */
-			color: white;
-			padding: 12px 20px;
-			border: none;
-			border-radius: 8px;
-			cursor: pointer;
-			font-size: 16px;
-			font-weight: 600;
-			width: 100%;
-			transition: background-color 0.3s;
-		}
-
-		button:hover, input[type="submit"]:hover {
-			background-color: #45a049; /* Darker shade on hover */
-		}
-
-		/* Card styling for profile, etc. */
-		.card {
-			background: #ffffff;
-			padding: 30px;
-			border-radius: 12px;
-			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-			margin-top: 20px;
-		}
-
-		.card h2 {
-			margin-top: 0;
-			color: #4CAF50;
-		}
-
-		/* Responsive Design for Dropdown Menu */
-		@media (max-width: 768px) {
-			.nav-toggle {
-				display: block; /* Show hamburger button */
-			}
-
-			nav ul {
-				display: none; /* Hide links by default */
-				flex-direction: column;
-				width: 100%;
-				position: absolute;
-				top: 60px; /* Position below the nav bar */
-				left: 0;
-				background-color: #ffffff;
-				box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-			}
-
-			nav ul.show {
-				display: flex; /* Show links when active */
-			}
-
-			nav ul li {
-				margin: 0;
-				width: 100%;
-				text-align: center;
-				border-bottom: 1px solid #f4f7f6;
-			}
-			
-			.dropdown .dropbtn {
-				width: 100%;
-				box-sizing: border-box;
-                justify-content: center;
-			}
-
-			.dropdown-content {
-				display: none; /* Initially hide dropdown content */
-				position: static; /* Remove absolute positioning */
-				box-shadow: none;
-				background-color: #e8f5e9;
-			}
-			
-			.dropdown-content a {
-				color: #2e7d32;
-			}
-
-			.dropdown.active .dropdown-content {
-				display: block; /* Show on active */
-			}
-
-            .dropdown.active .arrow {
-                transform: rotate(-135deg);
-                -webkit-transform: rotate(-135deg);
+        @media (max-width: 768px) {
+            nav {
+                position: relative;
+                width: 100%;
+                height: auto;
             }
 
-			nav ul li:last-child {
-				border-bottom: none;
-			}
+            .container {
+                margin-left: 0;
+            }
 
-			nav ul li a {
-				padding: 15px;
-				width: 100%;
-				box-sizing: border-box;
-			}
-		}
-	</style>
+            nav ul {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 5px;
+            }
+
+            .dropdown-content {
+                position: static;
+                box-shadow: none;
+                background-color: inherit;
+            }
+        }
+    </style>
 </head>
 <body>
+	<header class="topbar">
+		<div class="topbar-content">
+			<div class="project-title">
+				<i class="fa-solid fa-brain"></i>MindCare
+			</div>
+			{% if 'user_id' in session %}
+				<a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+			{% endif %}
+		</div>
+	</header>
     <nav>
-        <a href="#" class="nav-toggle" id="navToggle">&#9776;</a>
-        <ul id="navLinks">
+        <ul>
             <li><a href="{{ url_for('index') }}">Home</a></li>
             {% if 'user_id' in session %}
                 <li><a href="{{ url_for('chatbot_route') }}">Mindfulness Chatbot</a></li>
                 <li><a href="{{ url_for('mood_tracker') }}">Mood Tracker</a></li>
                 <li><a href="{{ url_for('visualization') }}">Mood Visualization</a></li>
                 <li><a href="{{ url_for('mindfulness') }}">Mindfulness Exercises</a></li>
-				<li class="dropdown">
-                    <a href="#" class="dropbtn">Games <span class="arrow"></span></a>
+				<li><a href="{{ url_for('breathing') }}">Breathing Exercise</a></li>
+                <li class="dropdown">
+                    <div class="dropbtn">Games &nbsp;&nbsp;&nbsp;<span class="arrow"></span></div>
                     <div class="dropdown-content">
-                        <a href="{{ url_for('game1') }}">Bubble Popping Game</a>
-                        <a href="{{ url_for('game2') }}">Mindful Cleaning Game</a>
+                        <a href="{{ url_for('game1') }}"> &nbsp;&nbsp; Bubble Popping Game</a>
+                        <a href="{{ url_for('game2') }}"> &nbsp;&nbsp; Mindful Cleaning Game</a>
                     </div>
                 </li>
                 <li><a href="{{ url_for('resources') }}">Resources</a></li>
                 <li><a href="{{ url_for('profile') }}">Profile</a></li>
-                <li><a href="{{ url_for('breathing') }}">Breathing Exercise</a></li>
-                
                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
             {% else %}
                 <li><a href="{{ url_for('login3') }}">Login</a></li>
                 <li><a href="{{ url_for('register2') }}">Register</a></li>
-                
-
             {% endif %}
         </ul>
     </nav>
+
     <div class="container">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -326,34 +243,9 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
+
         {% block content %}{% endblock %}
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const navToggle = document.getElementById('navToggle');
-            const navLinks = document.getElementById('navLinks');
-            const dropdown = document.querySelector('.dropdown');
-            const dropbtn = document.querySelector('.dropbtn');
-
-            // Toggle mobile navigation
-            if (navToggle) {
-                navToggle.addEventListener('click', (event) => {
-                    event.preventDefault(); // Prevent the link from navigating
-                    navLinks.classList.toggle('show');
-                });
-            }
-
-            // Handle dropdown for mobile
-            if (dropbtn) {
-                dropbtn.addEventListener('click', (event) => {
-                    // Check if we are in mobile view
-                    if (window.innerWidth <= 768) {
-                        event.preventDefault();
-                        dropdown.classList.toggle('active');
-                    }
-                });
-            }
-        });
-    </script>
+	{% block scripts %}{% endblock %}
 </body>
 </html>

@@ -1,142 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mental Health App</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
 	<style>
-		body {
-			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-			background-color: #f4f7f6;
-			color: #333;
-			margin: 0;
-			line-height: 1.6;
-		}
-
 		.container {
-			margin: 20px auto;
-			padding: 0 20px;
-		}
-
-		/* Navigation Bar */
-		nav {
-			background-color: #ffffff;
-			padding: 1rem 2rem;
-			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-			border-bottom: 1px solid #e0e0e0;
-			position: relative; /* Needed for positioning the dropdown */
-		}
-
-		nav ul {
-			list-style-type: none;
-			margin: 0;
-			padding: 0;
-			display: flex;
-			justify-content: flex-end;
-			align-items: center;
-		}
-
-		nav ul li {
-			margin-left: 20px;
-			position: relative; /* For dropdown positioning */
-		}
-
-		nav ul li a {
-			text-decoration: none;
-			color: #555;
-			font-weight: 500;
-			padding: 8px 12px;
-			border-radius: 6px;
-			transition: background-color 0.3s, color 0.3s;
-			display: block;
-		}
-
-		nav ul li a:hover, nav ul li a.active {
-			background-color: #e8f5e9; /* A light green for hover */
-			color: #2e7d32; /* A darker green for text */
-		}
-
-		.nav-toggle {
-			display: none; /* Hidden on desktop */
-			font-size: 24px;
-			color: #555;
-			text-decoration: none;
-			position: absolute;
-			right: 20px;
-			top: 15px;
-		}
-
-		/* Dropdown Styles */
-		.dropbtn {
-			display: flex;
-			align-items: center;
-		}
-
-		.arrow {
-			border: solid #555;
-			border-width: 0 2px 2px 0;
-			display: inline-block;
-			padding: 3px;
-			margin-left: 8px;
-			transform: rotate(45deg);
-			-webkit-transform: rotate(45deg);
-			transition: transform 0.3s ease;
-		}
-
-		.dropdown-content {
-			display: none;
-			position: absolute;
-			background-color: #f9f9f9;
-			min-width: 160px;
-			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-			z-index: 1;
-			border-radius: 6px;
-		}
-
-		.dropdown-content a {
-			color: black;
-			padding: 12px 16px;
-			text-decoration: none;
-			display: block;
-			text-align: left;
-		}
-
-		.dropdown-content a:hover {
-			background-color: #f1f1f1;
-		}
-
-		.dropdown:hover .dropdown-content {
-			display: block;
-		}
-
-		.dropdown:hover .arrow {
-			transform: rotate(-135deg);
-			-webkit-transform: rotate(-135deg);
-		}
-		
-		/* Flash Messages */
-		.flash {
-			padding: 15px;
-			margin-bottom: 20px;
-			border-radius: 8px;
-			font-weight: 500;
-			text-align: center;
-		}
-
-		.flash.success {
-			background-color: #d4edda;
-			color: #155724;
-			border: 1px solid #c3e6cb;
-		}
-
-		.flash.error {
-			background-color: #f8d7da;
-			color: #721c24;
-			border: 1px solid #f5c6cb;
-		}
+            margin-left: 120px;
+			padding: 20px;
+			margin-top: 20px;
+        }
 
 		/* Form Styling */
 		form {
@@ -210,20 +80,6 @@
 			background-color: #45a049; /* Darker shade on hover */
 		}
 
-		/* Card styling for profile, etc. */
-		.card {
-			background: #ffffff;
-			padding: 30px;
-			border-radius: 12px;
-			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-			margin-top: 20px;
-		}
-
-		.card h2 {
-			margin-top: 0;
-			color: #4CAF50;
-		}
-
 		.game-container {
 			margin: 0;
 			overflow: hidden;
@@ -258,22 +114,6 @@
 
 		/* Responsive Design */
 		@media (max-width: 768px) {
-			nav ul {
-				flex-direction: column;
-				align-items: flex-start;
-			}
-
-			nav ul li {
-				margin-left: 0;
-				margin-bottom: 10px;
-				width: 100%;
-			}
-
-			nav ul li a {
-				display: block;
-				text-align: left;
-			}
-			    
 			.dropdown .dropbtn {
 				width: 100%;
 				box-sizing: border-box;
@@ -290,31 +130,6 @@
 			}
 		}
 	</style>
-	<nav>
-		<ul>
-			<li><a href="{{ url_for('index') }}">Home</a></li>
-			{% if 'user_id' in session %}
-				<li><a href="{{ url_for('chatbot_route') }}">Mindfulness Chatbot</a></li>
-				<li><a href="{{ url_for('mood_tracker') }}">Mood Tracker</a></li>
-				<li><a href="{{ url_for('visualization') }}">Mood Visualization</a></li>
-				<li><a href="{{ url_for('mindfulness') }}">Mindfulness Exercises</a></li>
-				<li class="dropdown">
-                    <a href="#" class="dropbtn">Games <span class="arrow"></span></a>
-                    <div class="dropdown-content">
-                        <a href="{{ url_for('game1') }}">Bubble Popping Game</a>
-                        <a href="{{ url_for('game2') }}">Mindful Cleaning Game</a>
-                    </div>
-                </li>
-				<li><a href="{{ url_for('resources') }}">Resources</a></li>
-				<li><a href="{{ url_for('profile') }}">Profile</a></li>
-				
-				<li><a href="{{ url_for('logout') }}">Logout</a></li>
-			{% else %}
-				<li><a href="{{ url_for('login3') }}">Login</a></li>
-				<li><a href="{{ url_for('register2') }}">Register</a></li>
-			{% endif %}
-		</ul>
-	</nav>
     <div class="container">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -324,12 +139,13 @@
             {% endif %}
         {% endwith %}
         <div class="game-container">
+			<h2 style="color: white; font-size: 30px;">Bubble Popping</h2>
 			<div class="ui-container">
 				<div class="score">Score: <span id="score">0</span></div>
 				<div class="controls">
-					Click or tap bubbles to pop them<br>
-					Move mouse to create waves
+					Click or tap bubbles to pop them Move mouse to create waves
 				</div>
+				<br>
 			</div>
 			<canvas id="gameCanvas"></canvas>
 		</div>		
@@ -557,5 +373,4 @@
 		// Start the game
 		new Game();
 	</script>
-</body>
-</html>
+{% endblock %}
