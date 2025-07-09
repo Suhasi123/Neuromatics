@@ -48,3 +48,6 @@ pip install -r requirements.txt
 python app.py
 
 The application should now be running locally on http://127.0.0.1:5000 or your specified Flask port.
+
+DEPLOYMENT :
+Access our WebApp on : https://shaun8.pythonanywhere.com/
