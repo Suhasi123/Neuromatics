@@ -1,83 +1,137 @@
-{% extends 'base.html' %}
+
+{% extends "base.html" %}
 
 {% block content %}
 <h1>Mindfulness Exercises</h1>
 <p>Select a mindfulness exercise and listen to a guided audio track:</p>
 
+<!-- Breathing Coach -->
+<div class="exercise breathing-container">
+  <h3>Breathing Coach (4-7-8 Method)</h3>
+  <p>Follow the bubble and practice 4-7-8 breathing</p>
+
+  <div class="circle"></div>
+  <div class="instructions">
+    <p id="breathing-text">Breathe In</p>
+  </div>
+
+  <audio id="breathing-audio" src="{{ url_for('static', filename='audio/breathing.mp3') }}" preload="auto" loop></audio>
+
+  <button id="startBtn">Start</button>
+  <button id="stopBtn">Stop</button>
+</div>
+
+<!-- Other Mindfulness Exercises -->
 <div class="exercise">
-    <h3>Breathing Exercise</h3>
-    <audio id="breathingAudio" controls>
-        <source src="{{ url_for('static', filename='audio/breathing.mp3') }}" type="audio/mpeg">
-        Your browser does not support the audio tag.
-    </audio>
-    <button onclick="playAudio('breathingAudio')">Play</button>
-    <button onclick="pauseAudio('breathingAudio')">Pause</button>
+  <h3>Body Scan Meditation</h3>
+  <audio id="bodyScanAudio" controls>
+    <source src="{{ url_for('static', filename='audio/meditation.mp3') }}" type="audio/mpeg">
+    Your browser does not support the audio tag.
+  </audio>
+  <button onclick="playAudio('bodyScanAudio')">Play</button>
+  <button onclick="pauseAudio('bodyScanAudio')">Pause</button>
 </div>
 
 <div class="exercise">
-    <h3>Body Scan Meditation</h3>
-    <audio id="bodyScanAudio" controls>
-        <source src="{{ url_for('static', filename='audio/body_scan.mp3') }}" type="audio/mpeg">
-        Your browser does not support the audio tag.
-    </audio>
-    <button onclick="playAudio('bodyScanAudio')">Play</button>
-    <button onclick="pauseAudio('bodyScanAudio')">Pause</button>
+  <h3>Mindful Walking</h3>
+  <audio id="walkingAudio" controls>
+    <source src="{{ url_for('static', filename='audio/mindful_walk.mp3') }}" type="audio/mpeg">
+    Your browser does not support the audio tag.
+  </audio>
+  <button onclick="playAudio('walkingAudio')">Play</button>
+  <button onclick="pauseAudio('walkingAudio')">Pause</button>
 </div>
 
-<div class="exercise">
-    <h3>Mindful Walking</h3>
-    <audio id="walkingAudio" controls>
-        <source src="{{ url_for('static', filename='audio/walking.mp3') }}" type="audio/mpeg">
-        Your browser does not support the audio tag.
-    </audio>
-    <button onclick="playAudio('walkingAudio')">Play</button>
-    <button onclick="pauseAudio('walkingAudio')">Pause</button>
-</div>
+<!-- <div class="exercise">
+  <h3>Mindful Eating</h3>
+  <audio id="eatingAudio" controls>
+    <source src="{{ url_for('static', filename='audio/eating.mp3') }}" type="audio/mpeg">
+    Your browser does not support the audio tag.
+  </audio>
+  <button onclick="playAudio('eatingAudio')">Play</button>
+  <button onclick="pauseAudio('eatingAudio')">Pause</button>
+</div> -->
 
-<div class="exercise">
-    <h3>Mindful Eating</h3>
-    <audio id="eatingAudio" controls>
-        <source src="{{ url_for('static', filename='audio/eating.mp3') }}" type="audio/mpeg">
-        Your browser does not support the audio tag.
-    </audio>
-    <button onclick="playAudio('eatingAudio')">Play</button>
-    <button onclick="pauseAudio('eatingAudio')">Pause</button>
-</div>
-
+<!-- Audio JS -->
 <script>
-    function playAudio(id) {
-        let audio = document.getElementById(id);
-        audio.play();
-    }
+  function playAudio(id) {
+    document.getElementById(id).play();
+  }
 
-    function pauseAudio(id) {
-        let audio = document.getElementById(id);
-        audio.pause();
-    }
+  function pauseAudio(id) {
+    document.getElementById(id).pause();
+  }
 </script>
 
+<!-- Styles -->
 <style>
-    .exercise {
-        margin-bottom: 20px;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        text-align: center;
-    }
+  .exercise {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    text-align: center;
+    /* background-color: #f9f9f9; */
+    background-color: #e6f6f1;  
+  }
 
-    button {
-        margin: 5px;
-        padding: 8px 12px;
-        border: none;
-        border-radius: 4px;
-        background-color: #007bff;
-        color: white;
-        cursor: pointer;
-    }
+  button {
+    margin: 5px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 15px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
 
-    button:hover {
-        background-color: #0056b3;
-    }
+  button:hover {
+    background-color: #0056b3;
+  }
+
+  .breathing-container {
+    text-align: center;
+  }
+
+  .circle {
+    width: 150px;
+    height: 150px;
+    background-color: #90caf9;
+    border-radius: 50%;
+    margin: 30px auto;
+    transition: transform 4s ease-in-out;
+  }
+
+  .instructions {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+
+  #startBtn, #stopBtn {
+    width: 80px;
+    height: 35px;
+    font-weight: bold;
+    border-radius: 8px;
+    margin: 10px 8px;
+  }
+
+  #startBtn {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  #stopBtn {
+    background-color: #f44336;
+    color: white;
+  }
+
+  .controls{
+    border: 2px black solid;
+  }
 </style>
+{% endblock %}
 
+{% block scripts %}
+<script src="{{ url_for('static', filename='breathing.js') }}"></script>
 {% endblock %}
