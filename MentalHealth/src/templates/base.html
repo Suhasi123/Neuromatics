@@ -17,11 +17,14 @@
                 <li><a href="{{ url_for('mindfulness') }}">Mindfulness Exercises</a></li>
                 <li><a href="{{ url_for('resources') }}">Resources</a></li>
                 <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                <li><a href="{{ url_for('breathing') }}">Breathing Exercise</a></li>
                 
                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
             {% else %}
                 <li><a href="{{ url_for('login3') }}">Login</a></li>
                 <li><a href="{{ url_for('register2') }}">Register</a></li>
+                
+
             {% endif %}
         </ul>
     </nav>
