@@ -6,22 +6,17 @@
         <h2 class="mb-0"><i class="fas fa-brain mr-2"></i> Mental Wellness Assistant</h2>
         <p class="text-muted">Your companion for mindfulness and mental well-being</p>
     </div>
-    
+
     <div class="chat-container">
         <div id="chatbox" class="chatbox p-3 border rounded shadow-sm">
-            <div id="chat-messages">
-                <!-- Welcome message will be added on load -->
-            </div>
+            <div id="chat-messages"></div>
         </div>
-        
+
         <form id="chat-form" class="mt-3">
-            <div class="input-group">
-                <input type="text" id="user_input" name="user_input" class="form-control" 
-                       placeholder="Share your thoughts or ask a question..." required>
+            <div class="input-group shadow rounded">
+                <input type="text" id="user_input" name="user_input" class="form-control border-0 px-3 py-2" placeholder="Type your answer here..." required>
                 <div class="input-group-append">
-                    <button class="btn btn-primary send-btn" type="submit">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
+                    <button class="btn btn-gradient send-btn px-4" type="submit"><i class="fas fa-paper-plane"></i></button>
                 </div>
             </div>
         </form>
@@ -29,390 +24,107 @@
 </div>
 
 <style>
-    :root {
-        --primary-color: #5b86e5;
-        --secondary-color: #36d1dc;
-        --light-bg: #f8f9fa;
-        --user-msg-bg: linear-gradient(135deg, #5b86e5 0%, #36d1dc 100%);
-        --bot-msg-bg: #ffffff;
-        --bot-msg-border: #eaeaea;
-    }
-    
-    body {
-        background-color: #f5f7fa;
-    }
-    
-    .container {
-        max-width: 800px;
-    }
-    
-    .chat-container {
-        display: flex;
-        flex-direction: column;
-        height: calc(100vh - 180px);
-        min-height: 500px;
-    }
-    
-    .chatbot-header h2 {
-        background: var(--user-msg-bg);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        font-weight: 600;
-    }
-    
-    .chatbox {
-        flex: 1;
-        overflow-y: auto;
-        background: var(--light-bg);
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        scroll-behavior: smooth;
-        padding-bottom: 16px; /* Ensure space at bottom */
-    }
-    
-    .message-container {
-        display: flex;
-        margin-bottom: 15px;
-        animation: fadeIn 0.3s ease;
-        max-width: 100%;
-    }
-    
-    .user-container {
-        justify-content: flex-end;
-    }
-    
-    .bot-container {
-        justify-content: flex-start;
-    }
-    
-    .user-message {
-        background: var(--user-msg-bg);
-        color: white;
-        border-radius: 18px 18px 0 18px;
-        padding: 12px 16px;
-        max-width: 80%;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        word-wrap: break-word;
-    }
-    
-    .bot-message {
-        background: var(--bot-msg-bg);
-        border: 1px solid var(--bot-msg-border);
-        border-radius: 18px 18px 18px 0;
-        padding: 12px 16px;
-        max-width: 80%;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        line-height: 1.5;
-        word-wrap: break-word;
-    }
-    
-    .bot-message p {
-        margin-bottom: 0.8rem;
-    }
-    
-    .bot-message p:last-child {
-        margin-bottom: 0;
-    }
-    
-    .bot-message ul, .bot-message ol {
-        margin-top: 0.5rem;
-        margin-bottom: 0.5rem;
-        padding-left: 20px;
-    }
-    
-    .bot-message li {
-        margin-bottom: 0.5rem;
-    }
-    
-    .bot-message li:last-child {
-        margin-bottom: 0;
-    }
-    
-    .bot-message h4 {
-        font-size: 1.1rem;
-        margin-top: 1rem;
-        margin-bottom: 0.5rem;
-        color: #333;
-    }
-    
-    .bot-avatar {
-        width: 38px;
-        height: 38px;
-        min-width: 38px; /* Prevent shrinking */
-        background: var(--user-msg-bg);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 10px;
-        color: white;
-        font-size: 16px;
-    }
-    
-    .typing-indicator {
-        display: flex;
-        padding: 12px 16px;
-        background: var(--bot-msg-bg);
-        border: 1px solid var(--bot-msg-border);
-        border-radius: 18px 18px 18px 0;
-        width: fit-content;
-        height: 42px;
-    }
-    
-    .typing-indicator span {
-        height: 8px;
-        width: 8px;
-        background: #bbb;
-        border-radius: 50%;
-        display: inline-block;
-        margin: 0 2px;
-        animation: typing 1s infinite ease-in-out;
-    }
-    
-    .typing-indicator span:nth-child(2) {
-        animation-delay: 0.2s;
-    }
-    
-    .typing-indicator span:nth-child(3) {
-        animation-delay: 0.4s;
-    }
-    
-    .send-btn {
-        background: var(--user-msg-bg);
-        border: none;
-        border-radius: 0 5px 5px 0;
-        transition: all 0.3s;
-    }
-    
-    .send-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-    
-    .topic-tag {
-        display: inline-block;
-        background: rgba(91, 134, 229, 0.1);
-        color: var(--primary-color);
-        border-radius: 12px;
-        padding: 3px 8px;
-        margin-right: 5px;
-        margin-bottom: 5px;
-        font-size: 0.85rem;
-    }
-    
-    .highlight {
-        font-weight: 600;
-        color: var(--primary-color);
-    }
-    
-    @keyframes typing {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-5px); }
-        100% { transform: translateY(0px); }
-    }
-    
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    
-    @media (max-width: 576px) {
-        .bot-message, .user-message {
-            max-width: 85%;
-        }
-    }
+.btn-gradient {
+    background: linear-gradient(135deg, #5b86e5, #36d1dc);
+    color: white;
+    border: none;
+    transition: background 0.3s;
+}
+.btn-gradient:hover {
+    background: linear-gradient(135deg, #4a73c9, #2bb8c3);
+}
+.user-message, .bot-message {
+    font-size: 1rem;
+    padding: 12px 16px;
+    border-radius: 18px;
+}
+.user-message {
+    background: linear-gradient(135deg, #5b86e5, #36d1dc);
+    color: white;
+    align-self: flex-end;
+}
+.bot-message {
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    color: #333;
+}
+.bot-avatar {
+    background: linear-gradient(135deg, #5b86e5, #36d1dc);
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
 </style>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Add welcome message
-        const welcomeMessage = `
-            <p>Hello! I'm your Mental Wellness Assistant. I'm here to help with:</p>
-            <ul>
-                <li>Mindfulness exercises</li>
-                <li>Stress management techniques</li>
-                <li>Positive affirmations</li>
-                <li>Mental health resources</li>
-            </ul>
-            <p>How are you feeling today?</p>
-        `;
-        addBotMessage(welcomeMessage);
-        
-        // Create message observer to maintain scroll position
-        createMessageObserver();
-    });
+document.addEventListener("DOMContentLoaded", function () {
+    addBotMessage("👋 Hi! Let's check in on your mood.");
+});
 
-    // Observer for chat messages to maintain scroll
-    function createMessageObserver() {
-        const chatMessages = document.getElementById("chat-messages");
-        const observer = new MutationObserver(function(mutations) {
-            scrollToBottom();
-        });
-        
-        observer.observe(chatMessages, { 
-            childList: true,
-            subtree: true 
-        });
-    }
+document.getElementById("chat-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    let userInput = document.getElementById("user_input").value;
+    if (!userInput.trim()) return;
+    addUserMessage(userInput);
+    document.getElementById("user_input").value = "";
+    showTypingIndicator();
 
-    document.getElementById("chat-form").addEventListener("submit", function(event) {
-        event.preventDefault();
-        
-        let userInput = document.getElementById("user_input").value;
-        if (!userInput.trim()) return;
-        
-        // Append user message
-        addUserMessage(userInput);
-        
-        // Clear input
-        document.getElementById("user_input").value = "";
-        
-        // Show typing indicator
-        showTypingIndicator();
-        
-        // Send message to the backend with a small delay to prevent UI jumping
-        setTimeout(() => {
-            fetch("/chatbot", {
-                method: "POST",
-                body: new URLSearchParams({ user_input: userInput }),
-                headers: { "Content-Type": "application/x-www-form-urlencoded" }
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Remove typing indicator
-                hideTypingIndicator();
-                
-                // Format and structure the response
-                let formattedResponse = formatResponse(data.response);
-                
-                // Add bot response with a small delay to prevent jumping
-                setTimeout(() => {
-                    addBotMessage(formattedResponse);
-                }, 100);
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                hideTypingIndicator();
-                addBotMessage("<p>I apologize, but I'm having trouble processing your request. Please try again.</p>");
-            });
-        }, 500);
-    });
-    
-    function addUserMessage(message) {
-        let chatMessages = document.getElementById("chat-messages");
-        let messageDiv = document.createElement("div");
-        messageDiv.classList.add("message-container", "user-container");
-        messageDiv.innerHTML = `<div class="user-message">${escapeHTML(message)}</div>`;
-        chatMessages.appendChild(messageDiv);
-    }
-    
-    function addBotMessage(message) {
-        let chatMessages = document.getElementById("chat-messages");
-        let messageDiv = document.createElement("div");
-        messageDiv.classList.add("message-container", "bot-container");
-        messageDiv.innerHTML = `
-            <div class="bot-avatar"><i class="fas fa-brain"></i></div>
-            <div class="bot-message">${message}</div>
-        `;
-        chatMessages.appendChild(messageDiv);
-    }
-    
-    function showTypingIndicator() {
-        let chatMessages = document.getElementById("chat-messages");
-        let typingDiv = document.createElement("div");
-        typingDiv.id = "typing-indicator";
-        typingDiv.classList.add("message-container", "bot-container");
-        typingDiv.innerHTML = `
-            <div class="bot-avatar"><i class="fas fa-brain"></i></div>
-            <div class="typing-indicator">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        `;
-        chatMessages.appendChild(typingDiv);
-    }
-    
-    function hideTypingIndicator() {
-        let typingIndicator = document.getElementById("typing-indicator");
-        if (typingIndicator) {
-            typingIndicator.remove();
-        }
-    }
-    
-    function scrollToBottom() {
-        let chatbox = document.getElementById("chatbox");
-        chatbox.scrollTop = chatbox.scrollHeight;
-    }
-    
-    function escapeHTML(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-    
-    function formatResponse(text) {
-        // Ensure the response always starts with a paragraph
-        if (!text.startsWith('<p>')) {
-            text = '<p>' + text + '</p>';
-        }
-        
-        // Format paragraphs
-        text = text.replace(/\n\n/g, '</p><p>');
-        
-        // Convert single newlines within paragraphs to <br>
-        text = text.replace(/<p>(.*?)\n(.*?)<\/p>/gs, function(match, p1, p2) {
-            return '<p>' + p1 + '<br>' + p2 + '</p>';
+    setTimeout(() => {
+        fetch("/chatbot", {
+            method: "POST",
+            body: new URLSearchParams({ user_input: userInput }),
+            headers: { "Content-Type": "application/x-www-form-urlencoded" }
+        })
+        .then(response => response.json())
+        .then(data => {
+            hideTypingIndicator();
+            addBotMessage(data.response);
+        })
+        .catch(() => {
+            hideTypingIndicator();
+            addBotMessage("⚠️ I'm having trouble processing your request. Please try again.");
         });
-        
-        // Handle lists
-        // Convert bullet points to HTML list
-        if (text.includes("- ") || /\d+\.\s/.test(text)) {
-            // Handle bullet points
-            text = text.replace(/<p>(\s*- .*?)<\/p>/gs, function(match, list) {
-                const items = list.split(/\s*- /);
-                let html = '<ul>';
-                items.forEach((item, index) => {
-                    if (index > 0 && item.trim()) {
-                        html += '<li>' + item.trim() + '</li>';
-                    }
-                });
-                html += '</ul>';
-                return html;
-            });
-            
-            // Handle numbered lists
-            text = text.replace(/<p>(\s*\d+\.\s.*?)<\/p>/gs, function(match, list) {
-                const items = list.split(/\s*\d+\.\s/);
-                let html = '<ol>';
-                items.forEach((item, index) => {
-                    if (index > 0 && item.trim()) {
-                        html += '<li>' + item.trim() + '</li>';
-                    }
-                });
-                html += '</ol>';
-                return html;
-            });
-        }
-        
-        // Add headers for sections
-        if (text.includes(':')) {
-            text = text.replace(/(^|<p>)([\w\s]+):\s*(<\/p>|$)/gm, '<h4>$2</h4>');
-        }
-        
-        // Highlight important keywords for mental wellness
-        const keywords = [
-            'breathe', 'relax', 'mindful', 'focus', 'calm', 'present', 
-            'aware', 'peace', 'meditation', 'wellness', 'gratitude', 'self-care'
-        ];
-        
-        keywords.forEach(keyword => {
-            const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
-            text = text.replace(regex, `<span class="highlight">$&</span>`);
-        });
-        
-        return text;
-    }
+    }, 400);
+});
+
+function addUserMessage(message) {
+    let chatMessages = document.getElementById("chat-messages");
+    let messageDiv = document.createElement("div");
+    messageDiv.classList.add("message-container", "user-container", "d-flex", "justify-content-end", "mb-2");
+    messageDiv.innerHTML = `<div class="user-message">${message}</div>`;
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function addBotMessage(message) {
+    let chatMessages = document.getElementById("chat-messages");
+    let messageDiv = document.createElement("div");
+    messageDiv.classList.add("message-container", "bot-container", "d-flex", "align-items-start", "mb-2");
+    messageDiv.innerHTML = `<div class="bot-avatar mr-2"><i class="fas fa-brain"></i></div><div class="bot-message">${message}</div>`;
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function showTypingIndicator() {
+    let chatMessages = document.getElementById("chat-messages");
+    let typingDiv = document.createElement("div");
+    typingDiv.id = "typing-indicator";
+    typingDiv.classList.add("message-container", "bot-container", "d-flex", "align-items-start", "mb-2");
+    typingDiv.innerHTML = `<div class="bot-avatar mr-2"><i class="fas fa-brain"></i></div><div class="typing-indicator"><span></span><span></span><span></span></div>`;
+    chatMessages.appendChild(typingDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function hideTypingIndicator() {
+    let typingIndicator = document.getElementById("typing-indicator");
+    if (typingIndicator) typingIndicator.remove();
+}
 </script>
 {% endblock %}
+
+i want 8-10 question each for stress, anxiety and depression accurate and imp. question which will be evaluated and then given the prediction and suggestion so basically after describing mood positive neutral and negative and suggestion given i want to yo to ask the user 4 options whether they want to take stress quiz,depression,quiz,anxiety quiz or no quiz if he selects any quiz then those question should be appeared and taken answers and evaluted and given result and suggestion this question should be popped until the select no quiz once no is selected it should stop with questions and terminate
