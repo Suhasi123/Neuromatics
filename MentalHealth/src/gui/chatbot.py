@@ -1,42 +1,45 @@
-# GUI for chatbot interaction (optional)
-import tkinter as tk
-from tkinter import ttk
+# chatbot_tkinter.py - Tkinter GUI for rule-based chatbot with quiz flow
 
-# Importing the chatbot module
-from chatbot import Chatbot
+import tkinter as tk
+from chatbot import get_chatbot_response
 
 def chatbot_gui():
-    new_chatbot = Chatbot()
-    new_chatbot.load_chatbot()
-    # Create instance
     win = tk.Tk()
-    ekd = ttk.Notebook(win)
-    ekd.pack(fill='both', expand='yes')
-    # Add a tab
-    tab1 = ttk.Frame(ekd)
-    ekd.add(tab1, text='Chatbot')
-    
+    win.title("Mental Health Chatbot")
 
-    # Adding a Label
-    a_label = ttk.Label(tab1, text="Chatbot")
-    a_label.grid(column=0, row=0)
-    data=ttk.Label(tab1, text="Enter your message here:")
-    data.grid(column=0, row=1)
-    # Adding a Textbox Entry widget
-    user_message = ttk.Entry(tab1, width=50)
-    user_message.grid(column=1, row=1)
-    # Adding a Button
-    def click_me():
-        user_input = user_message.get()
-        user_input = user_input.lower()
-        response = new_chatbot.chatbot_response(user_input)
-        chatbot_response = ttk.Label(tab1, text=response)
-        chatbot_response.grid(column=1, row=3)
-        user_message.delete(0, 'end')
-    action = ttk.Button(tab1, text="Send", command=click_me)
-    action.grid(column=2, row=1)
-    # Start GUI
+    chat_display = tk.Text(win, height=25, width=70, state='disabled', wrap='word')
+    chat_display.pack(padx=10, pady=10)
+
+    user_input = tk.Entry(win, width=60)
+    user_input.pack(side='left', padx=(10,0), pady=(0,10))
+
+    def send_message():
+        message = user_input.get()
+        if not message.strip():
+            return
+        user_input.delete(0, tk.END)
+        chat_display.config(state='normal')
+        chat_display.insert(tk.END, "You: " + message + "\n")
+
+        response = get_chatbot_response(message, session_id="tk_user")
+        chat_display.insert(tk.END, "Bot: " + response + "\n")
+        chat_display.config(state='disabled')
+        chat_display.see(tk.END)
+
+        if "Thank you for checking in" in response or "We have completed" in response:
+            user_input.config(state='disabled')
+            send_button.config(state='disabled')
+
+    send_button = tk.Button(win, text="Send", command=send_message)
+    send_button.pack(side='left', padx=(5,10), pady=(0,10))
+
+    chat_display.config(state='normal')
+    chat_display.insert(tk.END, "Bot: Hi! Let's start your mental health check-in.\n")
+    chat_display.insert(tk.END, "Bot: " + get_chatbot_response("start", session_id="tk_user") + "\n")
+    chat_display.config(state='disabled')
+
     win.mainloop()
 
 if __name__ == "__main__":
     chatbot_gui()
+
