@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="fas fa-pencil-alt icon"></i> Gratitude Journal</h1>
+    <p>Take a moment to reflect on the good things in your life. What are you grateful for today?</p>
+</div>
+
+<div class="form-container">
+    <form method="POST">
+        <div class="form-group">
+            <textarea name="entry" class="form-control" rows="4" placeholder="Write something you're grateful for..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Entry</button>
+    </form>
+</div>
+
+<div class="entries-container">
+    <h2>Previous Entries</h2>
+    {% if entries %}
+        <ul class="entry-list">
+            {% for entry in entries %}
+                <li class="entry-item">
+                    {# The date is a string from sqlite3. We slice it to show just YYYY-MM-DD. #}
+                    <div class="entry-date">Date: {{ entry['date'][:10] }}</div>
+                    <div class="entry-content">{{ entry['entry'] }}</div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You haven't written any entries yet.</p>
+    {% endif %}
+</div>
+
+<style>
+    .page-header { text-align: center; margin-bottom: 40px; }
+    .page-header h1 { font-size: 2.5rem; color: #333; margin-bottom: 10px; }
+    .page-header .icon { color: #28a745; margin-right: 10px; }
+    .page-header p { font-size: 1.1rem; color: #666; }
+    
+    .form-container {
+        max-width: 700px;
+        margin: 0 auto 40px auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+    
+    .form-group { margin-bottom: 20px; }
+    
+    textarea.form-control {
+        width: 100%;
+        padding: 15px;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .entries-container { max-width: 700px; margin: 0 auto; }
+    .entries-container h2 { margin-bottom: 20px; color: #333; }
+    
+    .entry-list { list-style-type: none; padding: 0; }
+    
+    .entry-item {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 15px;
+    }
+    
+    .entry-date {
+        font-weight: bold;
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+    
+    .entry-content {
+        color: #212529;
+        line-height: 1.6;
+    }
+</style>
+{% endblock %}

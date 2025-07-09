@@ -1,6 +1,7 @@
 # src/app.py
 from flask import Flask, render_template, request, redirect, url_for, flash, session, g, jsonify, Response
 from database.db_helper import DBHelper
+from database.journal_db import init_journal_db, add_journal_entry, get_journal_entries
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 import chatbot as ch
@@ -126,11 +127,27 @@ def breathing():
 
 @app.route('/game1')
 def game1():
-	return render_template('game1.html')
+    return render_template('game1.html')
 
 @app.route('/game2')
 def game2():
-	return render_template('game2.html')
+    return render_template('game2.html')
+
+# --- The route that handles the journaling page ---
+@app.route('/journal', methods=['GET', 'POST'])
+def journal():
+    if 'user_id' not in session:
+        return redirect(url_for('login3'))
+
+    if request.method == 'POST':
+        entry_text = request.form.get('entry')
+        if entry_text:
+            add_journal_entry(entry_text, session['user_id'])
+            flash('Your gratitude entry has been saved!', 'success')
+            return redirect(url_for('journal'))
+    
+    entries = get_journal_entries(session['user_id'])
+    return render_template('journal.html', entries=entries)
 
 # from emotion_detector import EmotionDetector
 # import os
@@ -234,4 +251,5 @@ def game2():
 
 
 if __name__ == '__main__':
+    init_journal_db()
     app.run(debug=True)
