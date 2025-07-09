@@ -23,7 +23,7 @@ def close_db(exception):
 @app.route('/')
 def index():
     if 'user_id' in session:
-        return redirect(url_for('profile'))
+        return render_template('index.html')
     return redirect(url_for('login3'))
 
 @app.route('/login3', methods=['GET', 'POST'])

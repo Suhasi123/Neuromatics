@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+	.page-header {
+		text-align: center;
+		padding: 20px 0;
+		margin-bottom: 30px;
+		border-bottom: 1px solid #e0e0e0;
+	}
+
+	.page-header h1 {
+		color: #2e7d32; /* Dark green */
+		margin-bottom: 10px;
+	}
+
+	.page-header p {
+		font-size: 1.1em;
+		color: #555;
+		max-width: 700px;
+		margin: 0 auto;
+	}
+
+	.features-section h2 {
+		text-align: center;
+		color: #333;
+		margin-bottom: 30px;
+	}
+
+	.features-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 25px;
+	}
+
+	.feature-card {
+		background: #ffffff;
+		border-radius: 12px;
+		padding: 0; /* Remove padding from the card itself */
+		overflow: hidden; /* Important to contain the image corners */
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+		text-align: center;
+		transition: transform 0.3s, box-shadow 0.3s;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.feature-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+	}
+
+	.feature-card h3 {
+		margin-top: 0;
+		color: #4CAF50;
+	}
+
+	.feature-card p {
+		color: #666;
+		margin-bottom: 25px;
+	}
+
+	.btn-feature {
+		display: inline-block;
+		background-color: #4CAF50;
+		color: white;
+		padding: 10px 25px;
+		text-decoration: none;
+		border-radius: 8px;
+		font-weight: 600;
+		transition: background-color 0.3s;
+	}
+
+	.btn-feature:hover {
+		background-color: #45a049;
+	}
+
+	.features-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 25px;
+	}
+
+	.card-img {
+		width: 100%;
+		height: 180px;
+		object-fit: cover; /* Ensures images cover the space without distortion */
+	}
+
+	.card-content {
+		padding: 20px 30px 30px;
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1; /* Makes the content area fill the available space */
+	}
+
+	.card-content h3 {
+		margin-top: 0;
+		color: #4CAF50;
+	}
+
+	.card-content p {
+		color: #666;
+		margin-bottom: 25px;
+		flex-grow: 1; /* This pushes the button to the bottom of the card */
+	}
+
+	.btn-feature {
+		display: inline-block;
+		background-color: #4CAF50;
+		color: white;
+		padding: 10px 25px;
+		text-decoration: none;
+		border-radius: 8px;
+		font-weight: 600;
+		transition: background-color 0.3s;
+		margin-top: auto; /* Aligns button to the bottom */
+	}
+
+	.btn-feature:hover {
+		background-color: #45a049;
+	}
+</style>
+<div class="page-header">
+    <h1>Your Oasis of Calm</h1>
+    <p>Welcome to your personal space for mental wellness. Here you can track your mood, engage in mindful activities, and find moments of peace with our relaxing games.</p>
+</div>
+<div class="features-section">
+    <h2>Relax and Unwind</h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="card-img">
+                <svg width="100%" height="100%" viewBox="0 0 500 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <!-- Darker Background Gradient -->
+                        <linearGradient id="bubble-gradient-dark" x1="0" y1="0" x2="500" y2="300" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#26C6DA"/>
+                            <stop offset="1" stop-color="#00838F"/>
+                        </linearGradient>
+                        
+                        <!-- Colorful Bubble Gradients -->
+                        <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                            <stop offset="0%" style="stop-color:rgb(255,255,224);stop-opacity:0.7" />
+                            <stop offset="100%" style="stop-color:rgb(240,128,128);stop-opacity:0.8" />
+                        </radialGradient>
+                        <radialGradient id="grad2" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                            <stop offset="0%" style="stop-color:rgb(224,255,255);stop-opacity:0.7" />
+                            <stop offset="100%" style="stop-color:rgb(135,206,250);stop-opacity:0.8" />
+                        </radialGradient>
+                        <radialGradient id="grad3" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                            <stop offset="0%" style="stop-color:rgb(255,224,255);stop-opacity:0.7" />
+                            <stop offset="100%" style="stop-color:rgb(218,112,214);stop-opacity:0.8" />
+                        </radialGradient>
+                        <radialGradient id="grad4" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                            <stop offset="0%" style="stop-color:rgb(240,255,240);stop-opacity:0.7" />
+                            <stop offset="100%" style="stop-color:rgb(60,179,113);stop-opacity:0.8" />
+                        </radialGradient>
+                    </defs>
+                    <rect width="500" height="300" fill="url(#bubble-gradient-dark)"/>
+
+                    <!-- Colorful Bubbles -->
+                    <circle cx="100" cy="150" r="80" fill="url(#grad1)"/>
+                    <circle cx="280" cy="100" r="60" fill="url(#grad2)"/>
+                    <circle cx="400" cy="220" r="55" fill="url(#grad3)"/>
+                    <circle cx="150" cy="250" r="30" fill="url(#grad4)"/>
+                    <circle cx="60" cy="70" r="25" fill="url(#grad2)"/>
+                    <circle cx="450" cy="50" r="35" fill="url(#grad1)"/>
+                    <circle cx="220" cy="240" r="20" fill="url(#grad2)"/>
+                    <circle cx="350" cy="140" r="25" fill="url(#grad4)"/>
+                    
+                    <!-- Shine Effect -->
+                    <path d="M65 130 C 75 125, 85 135, 95 130" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.6"/>
+                    <path d="M255 80 C 265 75, 275 85, 285 80" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.7"/>
+                </svg>
+            </div>
+            <div class="card-content">
+                <h3>Bubble Popping Game</h3>
+                <p>A simple, satisfying game to help you de-stress. Pop the bubbles and let your worries float away.</p>
+                <a href="{{ url_for('game1') }}" class="btn-feature">Play Now</a>
+            </div>
+        </div>
+        <div class="feature-card">
+            <div class="card-img">
+                <svg width="100%" height="100%" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="400" height="300" fill="#A7C7E7"/>
+                    <circle cx="300" cy="100" r="40" fill="#FDFD96"/>
+                    <path d="M-10 200 Q 80 150, 180 210 T 410 200 L 410 300 L -10 300 Z" fill="#77DD77"/>
+                    <path d="M-10 250 Q 120 200, 250 260 T 410 240 L 410 300 L -10 300 Z" fill="#5DBB63"/>
+                    <rect width="400" height="300" fill="white" fill-opacity="0.8" clip-path="url(#wipe-effect)"/>
+                    <defs>
+                        <clipPath id="wipe-effect">
+                            <path d="M 0,0 L 400,0 L 400,300 L 0,300 L 0,0 Z M 150,0 L 150,300 L 400,300 L 400,0 L 150,0 Z"/>
+                        </clipPath>
+                    </defs>
+                    <g transform="translate(130, 110) rotate(15)">
+                        <rect x="0" y="40" width="80" height="15" fill="#6c757d" rx="3"/>
+                        <rect x="35" y="0" width="10" height="40" fill="#6c757d" rx="3"/>
+                        <rect x="-5" y="55" width="90" height="8" fill="#adb5bd" rx="2"/>
+                    </g>
+                </svg>
+            </div>
+            <div class="card-content">
+                <h3>Mindful Cleaning Game</h3>
+                <p>Gently wipe away the fog to reveal a beautiful, serene image. A calming activity to focus your mind.</p>
+                <a href="{{ url_for('game2') }}" class="btn-feature">Play Now</a>
+            </div>
+        </div>
+        <div class="feature-card">
+            <img src="https://images.unsplash.com/photo-1518082091569-ccaa5d0c845a?q=80&w=1168&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="A person writing in a journal" class="card-img">
+            <div class="card-content">
+                <h3>Mood Tracking</h3>
+                <p>Log your daily mood and journal your thoughts to gain insight into your emotional well-being over time.</p>
+                <a href="{{ url_for('mood_tracker') }}" class="btn-feature">Track Mood</a>
+            </div>
+        </div>
+        <div class="feature-card">
+            <img src="/static/chatbot.jpg" alt="Abstract image representing conversation and thought" class="card-img">
+            <div class="card-content">
+                <h3>Mindfulness Chatbot</h3>
+                <p>Engage with our friendly chatbot for guided mindfulness exercises and a moment of peaceful conversation.</p>
+                <a href="{{ url_for('chatbot_route') }}" class="btn-feature">Start Chatting</a>
+            </div>
+        </div>
+		<div class="feature-card">
+            <img src="https://images.unsplash.com/photo-1655970580622-4a547789c850?q=80&w=1174&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="A person meditating in a peaceful, natural setting" class="card-img">
+            <div class="card-content">
+                <h3>Meditation Exercises</h3>
+                <p>Explore a library of guided meditations to find calm, reduce stress, and improve focus.</p>
+                <a href="{{ url_for('mindfulness') }}" class="btn-feature">Explore Meditations</a>
+            </div>
+        </div>
+        <div class="feature-card">
+            <img src="https://images.unsplash.com/photo-1507919909716-c8262e491cde?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="A stack of books on a table" class="card-img">
+            <div class="card-content">
+                <h3>Helpful Articles</h3>
+                <p>Browse our curated collection of articles on mental wellness, mindfulness, and self-care strategies.</p>
+                <a href="{{ url_for('resources') }}" class="btn-feature">Read More</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

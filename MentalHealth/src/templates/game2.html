@@ -383,13 +383,34 @@
         image.crossOrigin = "Anonymous";
 
         const imageUrls = [
+			/*
             'https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
             'https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
             'https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
 			'https://images.pexels.com/photos/1438761/pexels-photo-1438761.jpeg?cs=srgb&dl=pexels-digitech-1438761.jpg&fm=jpg&w=1280&h=720',
 			'https://images.pexels.com/photos/624015/pexels-photo-624015.jpeg?cs=srgb&dl=pexels-frans-van-heerden-201846-624015.jpg&fm=jpg&w=1280&h=865',
 			'https://images.pexels.com/photos/1142950/pexels-photo-1142950.jpeg?cs=srgb&dl=pexels-jacub-gomez-447561-1142950.jpg&fm=jpg&w=1280&h=855',
-
+			'https://images.pexels.com/photos/5409751/pexels-photo-5409751.jpeg?cs=srgb&dl=pexels-trvlust-5409751.jpg&fm=jpg&w=1280&h=855',
+			'https://images.pexels.com/photos/2258536/pexels-photo-2258536.jpeg?cs=srgb&dl=pexels-frank-cone-140140-2258536.jpg&fm=jpg&w=1280&h=854',
+			'https://images.pexels.com/photos/4338015/pexels-photo-4338015.jpeg?cs=srgb&dl=pexels-arthousestudio-4338015.jpg&fm=jpg&w=1280&h=868',
+			'https://images.pexels.com/photos/4072840/pexels-photo-4072840.jpeg?cs=srgb&dl=pexels-mirco-violent-blur-1271756-4072840.jpg&fm=jpg&w=1280&h=853',
+			'https://images.pexels.com/photos/949194/pexels-photo-949194.jpeg?cs=srgb&dl=pexels-manuela-adler-344311-949194.jpg&fm=jpg&w=1280&h=850',
+			'https://images.pexels.com/photos/1083895/pexels-photo-1083895.jpeg?cs=srgb&dl=pexels-roonz-1083895.jpg&fm=jpg&w=1280&h=720',
+			'https://images.pexels.com/photos/534164/pexels-photo-534164.jpeg?cs=srgb&dl=pexels-eberhardgross-534164.jpg&fm=jpg&w=1280&h=887'*/
+			'https://images.unsplash.com/photo-1750688650545-d9e2a060dfe8?q=80&w=1106&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+			'https://images.unsplash.com/photo-1750591674353-201a65fb8f81?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+			'https://images.unsplash.com/photo-1750801321932-3d3e3fcdfdcd?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+			'https://images.unsplash.com/photo-1750962395469-33a3a671cfcd?q=80&w=1181&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+			'https://images.unsplash.com/photo-1750688650387-48fbdc7399b3?q=80&w=1106&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+			'https://images.unsplash.com/photo-1750440982726-d723eab666a5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+			'https://images.unsplash.com/photo-1750779940304-95eb48d09b5c?q=80&w=1075&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+			'https://images.unsplash.com/photo-1745874864678-f464940bb513?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+			'https://images.unsplash.com/photo-1744215450843-e61c2ea318a6?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+			'https://images.unsplash.com/photo-1746311473391-0c0bf08ad9b9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDEwMnw2c01WalRMU2tlUXx8ZW58MHx8fHx8',
+			'https://images.unsplash.com/photo-1481234877003-b379d46b7f2b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+			'https://images.unsplash.com/photo-1748182575169-e1e8e3901ec3?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+			'https://images.unsplash.com/photo-1747985323857-5c1c16b2ac47?q=80&w=1150&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+			'https://images.unsplash.com/photo-1745990652119-f13cced69b7c?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         ];
         let currentImageIndex = -1;
 
