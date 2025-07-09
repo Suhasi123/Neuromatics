@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+	<style>
+		.container {
+			width: 100%;
+			margin: 0 auto;
+			padding: 0 20px;
+		}
+
+		/* Navigation Bar */
+		nav {
+			background-color: #ffffff;
+			padding: 1rem 2rem;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+			border-bottom: 1px solid #e0e0e0;
+			position: relative; /* Needed for positioning the dropdown */
+		}
+
+		nav ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+		}
+
+		nav ul li {
+			margin-left: 20px;
+			position: relative; /* For dropdown positioning */
+		}
+
+		nav ul li a {
+			text-decoration: none;
+			color: #555;
+			font-weight: 500;
+			padding: 8px 12px;
+			border-radius: 6px;
+			transition: background-color 0.3s, color 0.3s;
+			display: block;
+		}
+
+		nav ul li a:hover, nav ul li a.active {
+			background-color: #e8f5e9; /* A light green for hover */
+			color: #2e7d32; /* A darker green for text */
+		}
+
+		.nav-toggle {
+			display: none; /* Hidden on desktop */
+			font-size: 24px;
+			color: #555;
+			text-decoration: none;
+			position: absolute;
+			right: 20px;
+			top: 15px;
+		}
+
+		/* Dropdown Styles */
+		.dropbtn {
+			display: flex;
+			align-items: center;
+		}
+
+		.arrow {
+			border: solid #555;
+			border-width: 0 2px 2px 0;
+			display: inline-block;
+			padding: 3px;
+			margin-left: 8px;
+			transform: rotate(45deg);
+			-webkit-transform: rotate(45deg);
+			transition: transform 0.3s ease;
+		}
+
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			background-color: #f9f9f9;
+			min-width: 160px;
+			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+			z-index: 1;
+			border-radius: 6px;
+		}
+
+		.dropdown-content a {
+			color: black;
+			padding: 12px 16px;
+			text-decoration: none;
+			display: block;
+			text-align: left;
+		}
+
+		.dropdown-content a:hover {
+			background-color: #f1f1f1;
+		}
+
+		.dropdown:hover .dropdown-content {
+			display: block;
+		}
+
+		.dropdown:hover .arrow {
+			transform: rotate(-135deg);
+			-webkit-transform: rotate(-135deg);
+		}
+
+
+		/* Flash Messages */
+		.flash {
+			padding: 15px;
+			margin-bottom: 20px;
+			border-radius: 8px;
+			font-weight: 500;
+			text-align: center;
+		}
+
+		.flash.success {
+			background-color: #d4edda;
+			color: #155724;
+			border: 1px solid #c3e6cb;
+		}
+
+		.flash.error {
+			background-color: #f8d7da;
+			color: #721c24;
+			border: 1px solid #f5c6cb;
+		}
+
+		/* Form Styling */
+		form {
+			background: #ffffff;
+			padding: 30px;
+			border-radius: 12px;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+			margin-top: 20px;
+		}
+
+		form h2 {
+			margin-top: 0;
+			margin-bottom: 20px;
+			color: #333;
+		}
+
+		.form-group {
+			margin-bottom: 20px;
+		}
+
+		.form-group label {
+			display: block;
+			margin-bottom: 8px;
+			font-weight: 600;
+			color: #555;
+		}
+
+		input[type="text"],
+		input[type="password"],
+		input[type="email"],
+		input[type="date"],
+		input[type="number"],
+		textarea,
+		select {
+			width: 100%;
+			padding: 12px;
+			border: 1px solid #ccc;
+			border-radius: 8px;
+			box-sizing: border-box; /* Important for padding and width */
+			transition: border-color 0.3s;
+		}
+
+		input[type="text"]:focus,
+		input[type="password"]:focus,
+		textarea:focus,
+		select:focus {
+			border-color: #4CAF50; /* Highlight color */
+			outline: none;
+		}
+
+		textarea {
+			resize: vertical;
+			min-height: 100px;
+		}
+
+		/* Button Styling */
+		button, input[type="submit"] {
+			background-color: #4CAF50; /* Primary button color */
+			color: white;
+			padding: 12px 20px;
+			border: none;
+			border-radius: 8px;
+			cursor: pointer;
+			font-size: 16px;
+			font-weight: 600;
+			width: 100%;
+			transition: background-color 0.3s;
+		}
+
+		button:hover, input[type="submit"]:hover {
+			background-color: #45a049; /* Darker shade on hover */
+		}
+
+		/* Card styling for profile, etc. */
+		.card {
+			background: #ffffff;
+			padding: 30px;
+			border-radius: 12px;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+			margin-top: 20px;
+		}
+
+		.card h2 {
+			margin-top: 0;
+			color: #4CAF50;
+		}
+
+		/* Responsive Design */
+		@media (max-width: 768px) {
+			nav ul {
+				flex-direction: column;
+				align-items: flex-start;
+			}
+
+			nav ul li {
+				margin-left: 0;
+				margin-bottom: 10px;
+				width: 100%;
+			}
+
+			nav ul li a {
+				display: block;
+				text-align: left;
+			}
+			    
+			.dropdown .dropbtn {
+				width: 100%;
+				box-sizing: border-box;
+				justify-content: center; /* Center arrow on mobile */
+			}
+
+			.dropdown.active .dropdown-content {
+				display: block; /* Show on active */
+			}
+			
+			.dropdown.active .arrow {
+				transform: rotate(-135deg);
+				-webkit-transform: rotate(-135deg);
+			}
+		}
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .game-container {
+			max-width: 960px;
+            width: 100%;
+            text-align: center;
+            background: #ffffff;
+            padding: 0.5rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            margin: 20px auto;
+        }
+		.game-info {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-around;
+			flex-wrap: wrap;
+		}
+		.cleared {
+			font-weight: bolder;
+			font-size: large;
+		}
+
+        #canvas-wrapper {
+            display: block;
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+
+        #gameCanvas {
+            display: block;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" style="font-size: 24px;"><text y="24">💧</text></svg>') 16 16, auto;
+        }
+
+		#controls {
+			align-self: flex-end;
+		}
+
+        #controls p {
+            font-size: 1.2em;
+            font-weight: 500;
+            color: #555;
+        }
+
+        #resetButton {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            width: auto; /* Override general button style */
+        }
+
+        #resetButton:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+	<nav>
+		<ul>
+			<li><a href="{{ url_for('index') }}">Home</a></li>
+			{% if 'user_id' in session %}
+				<li><a href="{{ url_for('chatbot_route') }}">Mindfulness Chatbot</a></li>
+				<li><a href="{{ url_for('mood_tracker') }}">Mood Tracker</a></li>
+				<li><a href="{{ url_for('visualization') }}">Mood Visualization</a></li>
+				<li><a href="{{ url_for('mindfulness') }}">Mindfulness Exercises</a></li>
+				<li class="dropdown">
+                    <a href="#" class="dropbtn">Games <span class="arrow"></span></a>
+                    <div class="dropdown-content">
+                        <a href="{{ url_for('game1') }}">Bubble Popping Game</a>
+                        <a href="{{ url_for('game2') }}">Mindful Cleaning Game</a>
+                    </div>
+                </li>
+				<li><a href="{{ url_for('resources') }}">Resources</a></li>
+				<li><a href="{{ url_for('profile') }}">Profile</a></li>
+				
+				<li><a href="{{ url_for('logout') }}">Logout</a></li>
+			{% else %}
+				<li><a href="{{ url_for('login3') }}">Login</a></li>
+				<li><a href="{{ url_for('register2') }}">Register</a></li>
+			{% endif %}
+		</ul>
+	</nav>
+	<div class="container">
+		{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+				{% for category, message in messages %}
+					<div class="flash {{ category }}">{{ message }}</div>
+				{% endfor %}
+			{% endif %}
+		{% endwith %}
+		<div class="game-container">
+			<h2>Mindful Cleaning</h2>
+			<div class="game-info">
+				<div class="description">
+					<p>Use your mouse to wipe away the fog and reveal the hidden image.</p>
+					<p class="cleared">Cleared: <span id="progress">0</span>%</p>
+				</div>
+				<div id="controls">
+					<button id="resetButton">New Image</button>
+				</div>
+			</div>
+			<div id="canvas-wrapper">
+				<canvas id="gameCanvas"></canvas>
+			</div>
+		</div>
+	</div>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const progressEl = document.getElementById('progress');
+        const resetButton = document.getElementById('resetButton');
+
+        let isDrawing = false;
+        let image = new Image();
+        image.crossOrigin = "Anonymous";
+
+        const imageUrls = [
+            'https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+            'https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+            'https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+			'https://images.pexels.com/photos/1438761/pexels-photo-1438761.jpeg?cs=srgb&dl=pexels-digitech-1438761.jpg&fm=jpg&w=1280&h=720',
+			'https://images.pexels.com/photos/624015/pexels-photo-624015.jpeg?cs=srgb&dl=pexels-frans-van-heerden-201846-624015.jpg&fm=jpg&w=1280&h=865',
+			'https://images.pexels.com/photos/1142950/pexels-photo-1142950.jpeg?cs=srgb&dl=pexels-jacub-gomez-447561-1142950.jpg&fm=jpg&w=1280&h=855',
+
+        ];
+        let currentImageIndex = -1;
+
+        function setCanvasSize() {
+            const containerWidth = canvas.parentElement.clientWidth;
+            canvas.width = containerWidth;
+            canvas.height = (containerWidth / 3) * 2;
+        }
+
+        function initializeGame() {
+            isDrawing = false;
+			if (currentImageIndex != -1) {
+				let prevIndex = currentImageIndex;
+				currentImageIndex = Math.floor(Math.random() * imageUrls.length);
+				if (currentImageIndex === prevIndex) {
+					currentImageIndex = (currentImageIndex + 1) % imageUrls.length;
+				}
+			} else {
+				currentImageIndex = Math.floor(Math.random() * imageUrls.length);
+			}
+            image.src = imageUrls[currentImageIndex];
+            image.onload = () => {
+                canvas.style.backgroundImage = `url('${image.src}')`;
+                canvas.style.backgroundSize = 'cover';
+                drawFog();
+                progressEl.textContent = '0';
+            };
+        }
+
+        function drawFog() {
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.fillStyle = 'rgba(100, 100, 120, 0.85)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.font = `${canvas.width / 25}px Arial`;
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'center';
+            ctx.fillText('Wipe me away...', canvas.width / 2, canvas.height / 2);
+        }
+
+        function getBrushPos(x, y) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: x - rect.left,
+                y: y - rect.top
+            };
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            e.preventDefault();
+
+            const pos = getBrushPos(e.clientX || e.touches[0].clientX, e.clientY || e.touches[0].clientY);
+            
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            const brushSize = canvas.width / 20; 
+            ctx.arc(pos.x, pos.y, brushSize, 0, Math.PI * 2, false);
+            ctx.fill();
+        }
+        
+        function calculateProgress() {
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+            let transparentPixels = 0;
+
+            for (let i = 3; i < data.length; i += 4) {
+                if (data[i] === 0) {
+                    transparentPixels++;
+                }
+            }
+
+            const totalPixels = canvas.width * canvas.height;
+            const progress = (transparentPixels / totalPixels) * 100;
+            progressEl.textContent = Math.round(progress);
+
+            if (progress > 95) {
+                progressEl.textContent = '100';
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        canvas.addEventListener('mousedown', () => isDrawing = true);
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); isDrawing = true; });
+
+        canvas.addEventListener('mouseup', () => { if (isDrawing) { isDrawing = false; calculateProgress(); } });
+        canvas.addEventListener('touchend', (e) => { if (isDrawing) { e.preventDefault(); isDrawing = false; calculateProgress(); } });
+
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
+
+        resetButton.addEventListener('click', () => {
+            setCanvasSize();
+            initializeGame();
+        });
+
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                setCanvasSize();
+                initializeGame();
+            }, 500);
+        });
+
+        setCanvasSize();
+        initializeGame();
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Window Cleaning</title>
+    <style>
+        body { 
+            margin: 0; 
+            background: #1a1a2e; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            overflow: hidden; 
+            touch-action: none;
+        }
+        canvas { 
+            background: #f5f5f5;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+        #progress { 
+            position: fixed; 
+            top: 20px; 
+            left: 20px; 
+            color: white; 
+            font-size: 24px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div id="progress">Cleaned: <span id="percent">0</span>%</div>
+    <canvas id="gameCanvas"></canvas>
+<script>
+class Game {
+    constructor() {
+        this.canvas = document.getElementById('gameCanvas');
+        this.ctx = this.canvas.getContext('2d', { alpha: false });
+        this.particles = new Float32Array(1000 * 5); // x, y, vx, vy, active
+        this.activeParticles = 0;
+        this.maxParticles = 1000;
+        this.dirt = [];
+        this.lastX = 0;
+        this.lastY = 0;
+        this.isDown = false;
+        this.cleanRadius = 30;
+        this.dirtTexture = this.createDirtTexture();
+
+        this.resize();
+        this.setupEvents();
+        this.createDirtClumps();
+    }
+
+    resize() {
+        this.width = this.canvas.width = window.innerWidth * 0.8;
+        this.height = this.canvas.height = window.innerHeight * 0.8;
+    }
+
+    createDirtTexture() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 100;
+        canvas.height = 100;
+
+        // Create noise pattern
+        const imageData = ctx.createImageData(100, 100);
+        for (let i = 0; i < imageData.data.length; i += 4) {
+            const value = Math.random() * 30 + 50;
+            imageData.data[i] = value;     // R
+            imageData.data[i + 1] = value * 0.6;  // G
+            imageData.data[i + 2] = value * 0.3;  // B
+            imageData.data[i + 3] = Math.random() * 100 + 155; // A
+        }
+        ctx.putImageData(imageData, 0, 0);
+
+        return canvas;
+    }
+
+    setupEvents() {
+        window.onresize = () => this.resize();
+
+        const getPos = (e) => {
+            const rect = this.canvas.getBoundingClientRect();
+            return {
+                x: (e.clientX || e.touches[0].clientX) - rect.left,
+                y: (e.clientY || e.touches[0].clientY) - rect.top
+            };
+        };
+
+        const start = (e) => {
+            this.isDown = true;
+            const pos = getPos(e);
+            this.lastX = pos.x;
+            this.lastY = pos.y;
+        };
+
+        const move = (e) => {
+            if (!this.isDown) return;
+            const pos = getPos(e);
+            this.addParticles(pos.x, pos.y);
+            this.clean(pos.x, pos.y);
+            this.lastX = pos.x;
+            this.lastY = pos.y;
+        };
+
+        const end = () => this.isDown = false;
+
+        this.canvas.onmousedown = start;
+        this.canvas.onmousemove = move;
+        this.canvas.onmouseup = end;
+        this.canvas.onmouseleave = end;
+        this.canvas.ontouchstart = e => { e.preventDefault(); start(e); };
+        this.canvas.ontouchmove = e => { e.preventDefault(); move(e); };
+        this.canvas.ontouchend = end;
+    }
+
+    createDirtClumps() {
+        const sizes = {
+            large: { min: 80, max: 120, count: 5 },
+            medium: { min: 50, max: 70, count: 10 },
+            small: { min: 35, max: 45, count: 15 }
+        };
+
+        for (const [type, config] of Object.entries(sizes)) {
+            for (let i = 0; i < config.count; i++) {
+                const size = Math.random() * (config.max - config.min) + config.min;
+                const x = Math.random() * (this.width - size * 2) + size;
+                const y = Math.random() * (this.height - size * 2) + size;
+                
+                const subCircles = [];
+                const numSubCircles = Math.floor(Math.random() * 3) + 3;
+                
+                for (let j = 0; j < numSubCircles; j++) {
+                    const angle = (j / numSubCircles) * Math.PI * 2;
+                    const distance = size * 0.3;
+                    subCircles.push({
+                        x: Math.cos(angle) * distance,
+                        y: Math.sin(angle) * distance,
+                        size: size * (0.7 + Math.random() * 0.3),
+                        cleanedPaths: []
+                    });
+                }
+
+                this.dirt.push({ x, y, size, subCircles, type });
+            }
+        }
+    }
+
+    addParticles(x, y) {
+        const dx = x - this.lastX;
+        const dy = y - this.lastY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const count = Math.min(5, Math.floor(dist / 2));
+
+        for (let i = 0; i < count && this.activeParticles < this.maxParticles; i++) {
+            const idx = this.activeParticles * 5;
+            this.particles[idx] = x;
+            this.particles[idx + 1] = y;
+            this.particles[idx + 2] = (Math.random() - 0.5);
+            this.particles[idx + 3] = Math.random() * 2;
+            this.particles[idx + 4] = 1;
+            this.activeParticles++;
+        }
+    }
+
+    clean(x, y) {
+        let totalCleaned = 0;
+        let totalArea = 0;
+
+        this.dirt.forEach(clump => {
+            clump.subCircles.forEach(circle => {
+                const circleX = clump.x + circle.x;
+                const circleY = clump.y + circle.y;
+                const dx = x - circleX;
+                const dy = y - circleY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < circle.size + this.cleanRadius) {
+                    circle.cleanedPaths.push({ x, y, radius: this.cleanRadius });
+                    if (circle.cleanedPaths.length > 50) {
+                        circle.cleanedPaths.shift();
+                    }
+                }
+
+                // Calculate cleaned percentage
+                const totalCircleArea = Math.PI * circle.size * circle.size;
+                let cleanedArea = 0;
+                circle.cleanedPaths.forEach(path => {
+                    cleanedArea += Math.PI * path.radius * path.radius;
+                });
+                
+                const cleaned = Math.min(1, cleanedArea / totalCircleArea);
+                totalCleaned += cleaned * totalCircleArea;
+                totalArea += totalCircleArea;
+            });
+        });
+
+        const percentage = (totalCleaned / totalArea) * 100;
+        document.getElementById('percent').textContent = Math.min(100, Math.floor(percentage));
+    }
+
+    update() {
+        const gravity = 0.2;
+        const friction = 0.98;
+
+        for (let i = 0; i < this.activeParticles; i++) {
+            const idx = i * 5;
+            if (this.particles[idx + 4]) {
+                this.particles[idx + 2] *= friction;
+                this.particles[idx + 3] = (this.particles[idx + 3] + gravity) * friction;
+                this.particles[idx] += this.particles[idx + 2];
+                this.particles[idx + 1] += this.particles[idx + 3];
+
+                if (this.particles[idx + 1] > this.height) {
+                    this.particles[idx + 4] = 0;
+                }
+            }
+        }
+
+        if (this.activeParticles > 100) {
+            let writeIdx = 0;
+            for (let readIdx = 0; readIdx < this.activeParticles; readIdx++) {
+                const rIdx = readIdx * 5;
+                if (this.particles[rIdx + 4]) {
+                    if (writeIdx !== readIdx) {
+                        const wIdx = writeIdx * 5;
+                        this.particles[wIdx] = this.particles[rIdx];
+                        this.particles[wIdx + 1] = this.particles[rIdx + 1];
+                        this.particles[wIdx + 2] = this.particles[rIdx + 2];
+                        this.particles[wIdx + 3] = this.particles[rIdx + 3];
+                        this.particles[wIdx + 4] = 1;
+                    }
+                    writeIdx++;
+                }
+            }
+            this.activeParticles = writeIdx;
+        }
+    }
+
+    draw() {
+        // Clear canvas
+        this.ctx.fillStyle = '#f5f5f5';
+        this.ctx.fillRect(0, 0, this.width, this.height);
+
+        // Draw dirt clumps
+        this.dirt.forEach(clump => {
+            clump.subCircles.forEach(circle => {
+                this.ctx.save();
+                
+                // Create clipping path for the dirt circle
+                this.ctx.beginPath();
+                this.ctx.arc(
+                    clump.x + circle.x,
+                    clump.y + circle.y,
+                    circle.size,
+                    0,
+                    Math.PI * 2
+                );
+                this.ctx.clip();
+
+                // Draw dirt texture
+                const pattern = this.ctx.createPattern(this.dirtTexture, 'repeat');
+                this.ctx.fillStyle = pattern;
+                this.ctx.fillRect(
+                    clump.x + circle.x - circle.size,
+                    clump.y + circle.y - circle.size,
+                    circle.size * 2,
+                    circle.size * 2
+                );
+
+                // Clear cleaned areas
+                this.ctx.globalCompositeOperation = 'destination-out';
+                circle.cleanedPaths.forEach(path => {
+                    this.ctx.beginPath();
+                    this.ctx.arc(path.x, path.y, path.radius, 0, Math.PI * 2);
+                    this.ctx.fill();
+                });
+
+                this.ctx.restore();
+            });
+        });
+
+        // Draw water particles
+        this.ctx.fillStyle = 'rgba(100, 200, 255, 0.6)';
+        for (let i = 0; i < this.activeParticles; i++) {
+            const idx = i * 5;
+            if (this.particles[idx + 4]) {
+                this.ctx.beginPath();
+                this.ctx.arc(this.particles[idx], this.particles[idx + 1], 2, 0, Math.PI * 2);
+                this.ctx.fill();
+            }
+        }
+
+        // Draw cursor
+        if (this.isDown) {
+            this.ctx.strokeStyle = 'rgba(100, 200, 255, 0.5)';
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            this.ctx.arc(this.lastX, this.lastY, this.cleanRadius, 0, Math.PI * 2);
+            this.ctx.stroke();
+        }
+    }
+
+    loop = () => {
+        this.update();
+        this.draw();
+        requestAnimationFrame(this.loop);
+    }
+}
+
+// Start the game
+new Game().loop();
+</script>
+</body>
+</html>

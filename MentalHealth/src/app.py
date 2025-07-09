@@ -120,6 +120,13 @@ def mindfulness():
 def resources():
     return render_template('resources.html')
 
+@app.route('/game1')
+def game1():
+	return render_template('game1.html')
+
+@app.route('/game2')
+def game2():
+	return render_template('game2.html')
 
 # from emotion_detector import EmotionDetector
 # import os

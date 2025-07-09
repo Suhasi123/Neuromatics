@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knife Cutting Game</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        canvas {
+            background: #f5f5f5;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <script>
+class Vegetable {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.width = 100;
+        this.height = 80;
+        this.color = this.getRandomVegetableColor();
+        this.isCut = false;
+        this.pieces = [];
+        this.gravity = 0.5;
+    }
+
+    getRandomVegetableColor() {
+        const colors = [
+            '#FF6B6B', // Red tomato
+            '#51CF66', // Green cucumber
+            '#FF922B', // Orange carrot
+            '#845EF7', // Purple eggplant
+            '#339AF0'  // Blue cabbage
+        ];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    cut(mouseX, mouseY) {
+        if (this.isCut) return;
+
+        // Calculate cut angle based on mouse position relative to center
+        const centerX = this.x + this.width/2;
+        const centerY = this.y + this.height/2;
+        const angle = Math.atan2(mouseY - centerY, mouseX - centerX);
+
+        // Create two pieces with physics properties
+        this.pieces = [
+            {
+                x: this.x,
+                y: this.y,
+                width: this.width/2,
+                height: this.height,
+                velocityX: -2,
+                velocityY: -5,
+                rotation: 0,
+                rotationSpeed: -0.05
+            },
+            {
+                x: this.x + this.width/2,
+                y: this.y,
+                width: this.width/2,
+                height: this.height,
+                velocityX: 2,
+                velocityY: -5,
+                rotation: 0,
+                rotationSpeed: 0.05
+            }
+        ];
+
+        this.isCut = true;
+    }
+
+    update() {
+        if (this.isCut) {
+            this.pieces.forEach(piece => {
+                // Apply gravity
+                piece.velocityY += this.gravity;
+                
+                // Update position
+                piece.x += piece.velocityX;
+                piece.y += piece.velocityY;
+                
+                // Update rotation
+                piece.rotation += piece.rotationSpeed;
+            });
+        }
+    }
+
+    draw(ctx) {
+        if (this.isCut) {
+            // Draw cut pieces
+            this.pieces.forEach(piece => {
+                ctx.save();
+                ctx.translate(piece.x + piece.width/2, piece.y + piece.height/2);
+                ctx.rotate(piece.rotation);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-piece.width/2, -piece.height/2, piece.width, piece.height);
+                ctx.restore();
+            });
+        } else {
+            // Draw whole vegetable
+            ctx.fillStyle = this.color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+    }
+
+    isPointInside(x, y) {
+        return x >= this.x && x <= this.x + this.width &&
+               y >= this.y && y <= this.y + this.height;
+    }
+}
+
+class Game {
+    constructor() {
+        this.canvas = document.getElementById('gameCanvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.vegetables = [];
+        this.knife = { x: 0, y: 0 };
+        this.isKnifeDragging = false;
+
+        this.resizeCanvas();
+        this.setupEventListeners();
+        this.spawnVegetable();
+    }
+
+    resizeCanvas() {
+        this.canvas.width = window.innerWidth * 0.8;
+        this.canvas.height = window.innerHeight * 0.8;
+    }
+
+    spawnVegetable() {
+        const x = (this.canvas.width - 100) / 2;
+        const y = 100;
+        this.vegetables.push(new Vegetable(x, y));
+    }
+
+    setupEventListeners() {
+        window.addEventListener('resize', () => this.resizeCanvas());
+
+        this.canvas.addEventListener('mousedown', (e) => {
+            const rect = this.canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            this.vegetables.forEach(veg => {
+                if (!veg.isCut && veg.isPointInside(x, y)) {
+                    veg.cut(x, y);
+                    // Spawn new vegetable after delay
+                    setTimeout(() => this.spawnVegetable(), 2000);
+                }
+            });
+        });
+
+        // Update knife position
+        this.canvas.addEventListener('mousemove', (e) => {
+            const rect = this.canvas.getBoundingClientRect();
+            this.knife.x = e.clientX - rect.left;
+            this.knife.y = e.clientY - rect.top;
+        });
+    }
+
+    drawKnife() {
+        this.ctx.save();
+        this.ctx.translate(this.knife.x, this.knife.y);
+        
+        // Draw knife blade
+        this.ctx.fillStyle = '#silver';
+        this.ctx.beginPath();
+        this.ctx.moveTo(-5, -20);
+        this.ctx.lineTo(5, -20);
+        this.ctx.lineTo(2, 20);
+        this.ctx.lineTo(-2, 20);
+        this.ctx.closePath();
+        this.ctx.fill();
+        
+        // Draw handle
+        this.ctx.fillStyle = '#4a1100';
+        this.ctx.fillRect(-3, 20, 6, 30);
+        
+        this.ctx.restore();
+    }
+
+    update() {
+        // Update vegetables
+        this.vegetables.forEach(veg => veg.update());
+
+        // Remove vegetables that have fallen off screen
+        this.vegetables = this.vegetables.filter(veg => {
+            if (veg.isCut) {
+                return veg.pieces.some(piece => piece.y < this.canvas.height + 100);
+            }
+            return true;
+        });
+    }
+
+    draw() {
+        // Clear canvas
+        this.ctx.fillStyle = '#f5f5f5';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // Draw vegetables
+        this.vegetables.forEach(veg => veg.draw(this.ctx));
+
+        // Draw knife
+        this.drawKnife();
+    }
+
+    animate() {
+        this.update();
+        this.draw();
+        requestAnimationFrame(() => this.animate());
+    }
+}
+
+// Start the game
+const game = new Game();
+game.animate();
+    </script>
+</body>
+</html>
