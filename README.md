@@ -30,18 +30,28 @@ Play simple, soothing games designed to reduce stress and promote mindfulness.
 📚 Articles & Resources
 Access curated articles and resources on mental health and well-being.
 
+
+
 Follow these steps to run the project locally:
 
-1️⃣ Clone the repository:
+1 Clone the repository:
 
 git clone https://github.com/Suhasi123/Neuromatics.git
 
-2️⃣ Navigate to the project directory:
+2️ Navigate to the project directory:
 
 cd MentalHealth/src
 
-3️⃣ Run the application:
+3 Install Requirements using:
+pip install -r requirements.txt
+
+4 Run the application:
 
 python app.py
 
 The application should now be running locally on http://127.0.0.1:5000 or your specified Flask port.
+
+
+
+DEPLOYMENT :
+Access our WebApp on : https://shaun8.pythonanywhere.com/

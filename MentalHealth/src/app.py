@@ -167,7 +167,7 @@ def delete_journal(entry_id):
         return redirect(url_for('login3'))
 
     # Call the new delete function from journal_db
-    delete_journal_entry(entry_id, current_user.id)
+    delete_journal_entry(entry_id, session['user_id'])
     flash('Journal entry deleted successfully.', 'success')
     return redirect(url_for('journal'))
 
