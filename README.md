@@ -4,34 +4,31 @@
 
 ---
 
-## 🌟 Features
+🌟 Features
 
-- **🔐 User Authentication**
-  - Secure login and registration with password hashing.
-  
-- **🌈 Mood Tracker**
-  - Daily mood logging and visualize trends over time.
+🔐 User Authentication
+Secure login and registration with password hashing.
 
-- **🌬️ Guided Breathing Exercises**
-  - Interactive breathing sessions for relaxation.
+🌬️ Guided Breathing Exercises
+Interactive breathing sessions for relaxation.
 
-- **🤖 AI Mental Health Chatbot**
-  - Chat with an AI-powered bot trained to offer emotional support.
+🤖 AI Mental Health Chatbot
+Chat with an AI-powered bot trained to offer emotional support.
 
-- **🌻 Gratitude Journal**
-  - Record things you're grateful for to foster positivity.
+🌻 Journal
+Record things you're grateful for to foster positivity.
 
-- **🌡️ Stress Assessment Quiz**
-  - Take a short quiz to evaluate your stress levels.
+🌡️ Stress Assessment Quiz
+Take a short quiz to evaluate your stress levels.
 
-- **😊 AI-Based Emotion Detection**
-  - Detect emotions from uploaded images or live webcam using a deep learning model.
+🎵 Background Music
+Calming music for a peaceful app experience.
 
-- **🗣️ Community Forum**
-  - Share thoughts, reply to others, and connect in a supportive environment.
+🎮 Relaxing Games
+Play simple, soothing games designed to reduce stress and promote mindfulness.
 
-- **🎵 Background Music**
-  - Calming music for a peaceful app experience.
+📚 Articles & Resources
+Access curated articles and resources on mental health and well-being.
 
 Follow these steps to run the project locally:
 
