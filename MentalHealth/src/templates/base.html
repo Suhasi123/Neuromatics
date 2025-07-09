@@ -217,6 +217,7 @@
                 <li><a href="{{ url_for('mood_tracker') }}">Mood Tracker</a></li>
                 <li><a href="{{ url_for('visualization') }}">Mood Visualization</a></li>
                 <li><a href="{{ url_for('mindfulness') }}">Mindfulness Exercises</a></li>
+				<li><a href="{{ url_for('breathing') }}">Breathing Exercise</a></li>
                 <li class="dropdown">
                     <div class="dropbtn">Games &nbsp;&nbsp;&nbsp;<span class="arrow"></span></div>
                     <div class="dropdown-content">
@@ -226,7 +227,6 @@
                 </li>
                 <li><a href="{{ url_for('resources') }}">Resources</a></li>
                 <li><a href="{{ url_for('profile') }}">Profile</a></li>
-                <li><a href="{{ url_for('breathing') }}">Breathing Exercise</a></li>
                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
             {% else %}
                 <li><a href="{{ url_for('login3') }}">Login</a></li>
@@ -246,5 +246,6 @@
 
         {% block content %}{% endblock %}
     </div>
+	{% block scripts %}{% endblock %}
 </body>
 </html>

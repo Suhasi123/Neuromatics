@@ -1,5 +1,5 @@
-<!-- templates/breathing.html -->
 {% extends "base.html" %}
+
 {% block content %}
 <div class="breathing-container">
   <h2>Breathing Coach</h2>
@@ -13,8 +13,31 @@
 
   <audio id="breathing-audio" src="{{ url_for('static', filename='audio/breathing.mp3') }}" preload="auto" loop></audio>
 
-  <button onclick="startBreathing()">Start</button>
+  <button id="startBtn">Start</button>
+  <button id="stopBtn">Stop</button>
 </div>
+
+<style>
+  .breathing-container {
+    text-align: center;
+    padding: 40px;
+  }
+
+  .circle {
+    width: 150px;
+    height: 150px;
+    background-color: #90caf9;
+    border-radius: 50%;
+    margin: 40px auto;
+    transition: transform 4s ease-in-out;
+  }
+
+  .instructions {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+</style>
 {% endblock %}
 
 {% block scripts %}
