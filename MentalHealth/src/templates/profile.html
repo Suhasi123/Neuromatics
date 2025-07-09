@@ -1,12 +1,63 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Profile</h1>
-<p><strong>Username:</strong> {{ user['username'] }}</p>
-<p><strong>Name:</strong> {{ user['name'] }}</p>
-<p><strong>Age:</strong> {{ user['age'] }}</p>
-<p><strong>Gender:</strong> {{ user['gender'] }}</p>
-<p><strong>Education:</strong> {{ user['education'] }}</p>
-<p><strong>Date of Birth:</strong> {{ user['dob'] }}</p>
-<a href="{{ url_for('logout') }}">Logout</a>
+<div class="profile-container">
+  <div class="profile-card">
+    <h1><i class="fas fa-user-circle"></i> Profile</h1>
+    <ul class="profile-details">
+      <li><strong><i class="fas fa-user"></i> &nbsp; Username:</strong> SUHASI</li>
+      <li><strong><i class="fas fa-id-badge"></i>  &nbsp; Name:</strong> Suhasi Bari</li>
+      <li><strong><i class="fas fa-birthday-cake"></i> &nbsp;  Age:</strong> 20</li>
+      <li><strong><i class="fas fa-venus-mars"></i>  &nbsp; Gender:</strong> Female</li>
+      <li><strong><i class="fas fa-graduation-cap"></i> &nbsp;  Education:</strong> BTech</li>
+      <li><strong><i class="fas fa-calendar-alt"></i> &nbsp; Date of Birth:</strong> 2012-05-02</li>
+    </ul>
+  </div>
+</div>
+<style>
+    .profile-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.profile-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+}
+
+.profile-card h1 {
+  margin-top: 0;
+  margin-bottom: 25px;
+  color: #2c3e50;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-details {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 18px;
+}
+
+.profile-details li {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-details i {
+  color: #546974;
+  min-width: 20px;
+}
+
+</style>
 {% endblock %}

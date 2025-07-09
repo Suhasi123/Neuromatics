@@ -20,7 +20,7 @@
 			top: 0;
 			left: 0;
 			width: 100%;
-			height: 60px;
+			height: 70px;
 			background-color:#2F3E46;
 			color: white;
 			display: flex;
@@ -40,15 +40,29 @@
 		.project-title{
 			font-size: 25px;
 			font-weight: 500;
+			margin-top: 20px;
+			display: flex;
 		}
 
-		.project-title i {
+		/* .project-title i {
 			margin-right: 10px;
 			color: white;
 			font-size: 25;
 			vertical-align: middle;
+		} */
+
+		.project-title img{
+			width: 60px;
+			height: 60px;
+			margin-right: 15px;
 		}
 
+		.project-title p{
+			margin-top: 10px;
+			font-size: 35px;
+			font-weight: 700;
+			color: rgb(20, 127, 108);
+		}
 
 		.logout-btn {
 			background-color: white;
@@ -70,7 +84,7 @@
             left: 0;
             height: 100vh;
             width: 220px;
-            background: linear-gradient(135deg, #91b3ce 30%, #82bacf 100%);
+            background:  linear-gradient(135deg, #5b86e5 0%, #36d1dc 100%);
             padding-top: 30px;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
             overflow-y: auto;
@@ -202,7 +216,9 @@
 	<header class="topbar">
 		<div class="topbar-content">
 			<div class="project-title">
-				<i class="fa-solid fa-brain"></i>MindCare
+				<!-- <i class="fa-solid fa-brain"></i>MindCare -->
+				 <img src="../static/Images/Adobe Express - file.png">
+				 <p>MindCare</p>
 			</div>
 			{% if 'user_id' in session %}
 				<a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
@@ -225,7 +241,7 @@
                         <a href="{{ url_for('game2') }}"> &nbsp;&nbsp; Mindful Cleaning Game</a>
                     </div>
                 </li>
-                <li><a href="{{ url_for('resources') }}">Resources</a></li>
+                <li><a href="{{ url_for('resources') }}">Articles</a></li>
                 <li><a href="{{ url_for('profile') }}">Profile</a></li>
                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
             {% else %}
