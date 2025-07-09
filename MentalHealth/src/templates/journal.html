@@ -1,95 +1,163 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="page-header">
-    <h1><i class="fas fa-pencil-alt icon"></i> Gratitude Journal</h1>
-    <p>Take a moment to reflect on the good things in your life. What are you grateful for today?</p>
-</div>
+<div class="journal-container">
+    <div class="journal-header">
+        <h1><i class="fas fa-leaf icon"></i> My Gratitude Journal</h1>
+        <p>Hello, {{ username }}. Take a moment to reflect on what brings you joy.</p>
+    </div>
 
-<div class="form-container">
-    <form method="POST">
-        <div class="form-group">
-            <textarea name="entry" class="form-control" rows="4" placeholder="Write something you're grateful for..." required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Save Entry</button>
-    </form>
-</div>
+    <div class="add-entry-box">
+        <form method="POST">
+            <textarea name="entry" placeholder="What are you grateful for today?" required></textarea>
+            <button type="submit" class="btn-save">
+                <i class="fas fa-plus-circle"></i> Save Entry
+            </button>
+        </form>
+    </div>
 
-<div class="entries-container">
-    <h2>Previous Entries</h2>
-    {% if entries %}
-        <ul class="entry-list">
+    <div class="entries-list">
+        <h2>Previous Entries</h2>
+        {% if entries %}
             {% for entry in entries %}
-                <li class="entry-item">
-                    {# The date is a string from sqlite3. We slice it to show just YYYY-MM-DD. #}
-                    <div class="entry-date">Date: {{ entry['date'][:10] }}</div>
-                    <div class="entry-content">{{ entry['entry'] }}</div>
-                </li>
+                <div class="entry-card">
+                    <div class="card-header">
+                        <span class="entry-date">
+                            <i class="far fa-calendar-alt"></i> 
+                            {{ entry['date'][:10] }}
+                        </span>
+                        <form action="{{ url_for('delete_journal', entry_id=entry['id']) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this entry?');">
+                            <button type="submit" class="btn-delete">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <p class="entry-content">{{ entry['entry'] }}</p>
+                </div>
             {% endfor %}
-        </ul>
-    {% else %}
-        <p>You haven't written any entries yet.</p>
-    {% endif %}
+        {% else %}
+            <p class="no-entries">Your journal is empty. Write your first entry above!</p>
+        {% endif %}
+    </div>
 </div>
 
 <style>
-    .page-header { text-align: center; margin-bottom: 40px; }
-    .page-header h1 { font-size: 2.5rem; color: #333; margin-bottom: 10px; }
-    .page-header .icon { color: #28a745; margin-right: 10px; }
-    .page-header p { font-size: 1.1rem; color: #666; }
-    
-    .form-container {
-        max-width: 700px;
-        margin: 0 auto 40px auto;
-        padding: 30px;
-        background-color: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-    }
-    
-    .form-group { margin-bottom: 20px; }
-    
-    textarea.form-control {
-        width: 100%;
-        padding: 15px;
-        border: 1px solid #ced4da;
-        border-radius: 8px;
-        font-size: 1rem;
-        line-height: 1.5;
-    }
-    
-    .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 8px;
-        cursor: pointer;
+    .journal-container {
+        max-width: 800px;
+        margin: 40px auto;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    .entries-container { max-width: 700px; margin: 0 auto; }
-    .entries-container h2 { margin-bottom: 20px; color: #333; }
-    
-    .entry-list { list-style-type: none; padding: 0; }
-    
-    .entry-item {
-        background-color: #f8f9fa;
-        border: 1px solid #e9ecef;
+    .journal-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    .journal-header h1 {
+        font-size: 2.8rem;
+        color: #2c3e50;
+        font-weight: 300;
+    }
+    .journal-header .icon {
+        color: #27ae60;
+    }
+    .journal-header p {
+        font-size: 1.2rem;
+        color: #7f8c8d;
+    }
+
+    .add-entry-box {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+        margin-bottom: 50px;
+    }
+    .add-entry-box textarea {
+        width: 100%;
+        border: 1px solid #ecf0f1;
+        border-radius: 8px;
+        padding: 15px;
+        font-size: 1.1rem;
+        min-height: 100px;
+        margin-bottom: 15px;
+        transition: border-color 0.3s;
+    }
+    .add-entry-box textarea:focus {
+        outline: none;
+        border-color: #3498db;
+    }
+    .btn-save {
+        display: block;
+        width: 100%;
+        background-color: #27ae60;
+        color: white;
+        border: none;
+        padding: 15px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .btn-save:hover {
+        background-color: #229954;
+    }
+    .btn-save i {
+        margin-right: 8px;
+    }
+
+    .entries-list h2 {
+        font-weight: 300;
+        font-size: 2rem;
+        color: #2c3e50;
+        border-bottom: 1px solid #ecf0f1;
+        padding-bottom: 10px;
+        margin-bottom: 30px;
+    }
+
+    .entry-card {
+        background: #ffffff;
         border-radius: 8px;
         padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         margin-bottom: 15px;
+        color: #95a5a6;
     }
-    
     .entry-date {
-        font-weight: bold;
-        color: #6c757d;
         font-size: 0.9rem;
-        margin-bottom: 10px;
+    }
+    .entry-date i {
+        margin-right: 5px;
+    }
+    .entry-content {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: #34495e;
     }
     
-    .entry-content {
-        color: #212529;
-        line-height: 1.6;
+    .btn-delete {
+        background: none;
+        border: none;
+        color: #bdc3c7;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+    .btn-delete:hover {
+        color: #e74c3c;
+    }
+
+    .no-entries {
+        text-align: center;
+        color: #7f8c8d;
+        font-size: 1.1rem;
+        padding: 40px 0;
     }
 </style>
 {% endblock %}

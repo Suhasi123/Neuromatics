@@ -138,6 +138,11 @@ def game2():
 def journal():
     if 'user_id' not in session:
         return redirect(url_for('login3'))
+    
+    user = get_db().get_user_by_id(session['user_id'])
+    if user is None:
+        flash('User not found', 'error')
+        return redirect(url_for('login3'))
 
     if request.method == 'POST':
         entry_text = request.form.get('entry')
@@ -147,7 +152,17 @@ def journal():
             return redirect(url_for('journal'))
     
     entries = get_journal_entries(session['user_id'])
-    return render_template('journal.html', entries=entries)
+    return render_template('journal.html', entries=entries, username=user[1])
+
+@app.route('/delete-journal/<int:entry_id>', methods=['POST'])
+def delete_journal(entry_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login3'))
+
+    # Call the new delete function from journal_db
+    delete_journal_entry(entry_id, current_user.id)
+    flash('Journal entry deleted successfully.', 'success')
+    return redirect(url_for('journal'))
 
 # from emotion_detector import EmotionDetector
 # import os
