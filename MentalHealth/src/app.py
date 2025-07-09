@@ -119,6 +119,10 @@ def mindfulness():
 @app.route('/resources')
 def resources():
     return render_template('resources.html')
+@app.route("/breathing")
+def breathing():
+    return render_template("breathing.html")
+
 
 
 # from emotion_detector import EmotionDetector
