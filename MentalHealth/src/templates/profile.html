@@ -5,12 +5,12 @@
   <div class="profile-card">
     <h1><i class="fas fa-user-circle"></i> Profile</h1>
     <ul class="profile-details">
-      <li><strong><i class="fas fa-user"></i> &nbsp; Username:</strong> SUHASI</li>
-      <li><strong><i class="fas fa-id-badge"></i>  &nbsp; Name:</strong> Suhasi Bari</li>
-      <li><strong><i class="fas fa-birthday-cake"></i> &nbsp;  Age:</strong> 20</li>
-      <li><strong><i class="fas fa-venus-mars"></i>  &nbsp; Gender:</strong> Female</li>
-      <li><strong><i class="fas fa-graduation-cap"></i> &nbsp;  Education:</strong> BTech</li>
-      <li><strong><i class="fas fa-calendar-alt"></i> &nbsp; Date of Birth:</strong> 2012-05-02</li>
+      <li><strong><i class="fas fa-user"></i> &nbsp; Username:</strong>{{ user_data['username'] }}</li>
+      <li><strong><i class="fas fa-id-badge"></i>  &nbsp; Name:</strong>{{ user_data['name'] }}</li>
+      <li><strong><i class="fas fa-birthday-cake"></i> &nbsp;  Age:</strong>{{ user_data['age'] }}</li>
+      <li><strong><i class="fas fa-venus-mars"></i>  &nbsp; Gender:</strong>{{ user_data['gender'] }}</li>
+      <li><strong><i class="fas fa-graduation-cap"></i> &nbsp;  Education:</strong>{{ user_data['education'] }}</li>
+      <li><strong><i class="fas fa-calendar-alt"></i> &nbsp; Date of Birth:</strong>{{ user_data['dob'] }}</li>
     </ul>
   </div>
 </div>

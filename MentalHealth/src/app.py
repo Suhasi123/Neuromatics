@@ -85,7 +85,7 @@ def profile():
         'education': user[6],
         'dob': user[7]
     }
-    return render_template('profile.html', user=user_data)
+    return render_template('profile.html', user_data=user_data)
 
 @app.route('/logout')
 def logout():
