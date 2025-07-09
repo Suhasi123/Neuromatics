@@ -30,6 +30,8 @@ Play simple, soothing games designed to reduce stress and promote mindfulness.
 📚 Articles & Resources
 Access curated articles and resources on mental health and well-being.
 
+
+
 Follow these steps to run the project locally:
 
 1 Clone the repository:
@@ -48,6 +50,8 @@ pip install -r requirements.txt
 python app.py
 
 The application should now be running locally on http://127.0.0.1:5000 or your specified Flask port.
+
+
 
 DEPLOYMENT :
 Access our WebApp on : https://shaun8.pythonanywhere.com/
