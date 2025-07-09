@@ -1,7 +1,7 @@
 # src/app.py
 from flask import Flask, render_template, request, redirect, url_for, flash, session, g, jsonify, Response
 from database.db_helper import DBHelper
-from database.journal_db import init_journal_db, add_journal_entry, get_journal_entries
+from database.journal_db import init_journal_db, add_journal_entry, get_journal_entries, delete_journal_entry
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 import chatbot as ch
@@ -9,6 +9,13 @@ import numpy as np
 
 app = Flask(__name__)
 app.secret_key = 'e5b0b6ce3b7b2b3e8f2c9c5c4b6a7d9a2e3c4e5f6a7b8c9d'  # Replace with a strong secret key
+
+# --- Automatic Database Initialization ---
+with app.app_context():
+    # Creates the database tables before the first request
+    # This will run once when the first user visits the site
+    init_journal_db()
+    print("Database initialized automatically on first request.")
 
 def get_db():
     if 'db' not in g:
@@ -266,5 +273,4 @@ def delete_journal(entry_id):
 
 
 if __name__ == '__main__':
-    init_journal_db()
     app.run(debug=True)
