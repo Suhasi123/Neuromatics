@@ -1,0 +1,22 @@
+<!-- templates/breathing.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="breathing-container">
+  <h2>Breathing Coach</h2>
+  <p>Follow the bubble and practice 4-7-8 breathing</p>
+
+  <div class="circle"></div>
+
+  <div class="instructions">
+    <p id="breathing-text">Breathe In</p>
+  </div>
+
+  <audio id="breathing-audio" src="{{ url_for('static', filename='audio/breathing.mp3') }}" preload="auto" loop></audio>
+
+  <button onclick="startBreathing()">Start</button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='breathing.js') }}"></script>
+{% endblock %}

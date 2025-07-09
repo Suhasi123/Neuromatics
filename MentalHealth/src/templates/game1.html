@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+	<style>
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+			background-color: #f4f7f6;
+			color: #333;
+			margin: 0;
+			line-height: 1.6;
+		}
+
+		.container {
+			margin: 20px auto;
+			padding: 0 20px;
+		}
+
+		/* Navigation Bar */
+		nav {
+			background-color: #ffffff;
+			padding: 1rem 2rem;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+			border-bottom: 1px solid #e0e0e0;
+			position: relative; /* Needed for positioning the dropdown */
+		}
+
+		nav ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+		}
+
+		nav ul li {
+			margin-left: 20px;
+			position: relative; /* For dropdown positioning */
+		}
+
+		nav ul li a {
+			text-decoration: none;
+			color: #555;
+			font-weight: 500;
+			padding: 8px 12px;
+			border-radius: 6px;
+			transition: background-color 0.3s, color 0.3s;
+			display: block;
+		}
+
+		nav ul li a:hover, nav ul li a.active {
+			background-color: #e8f5e9; /* A light green for hover */
+			color: #2e7d32; /* A darker green for text */
+		}
+
+		.nav-toggle {
+			display: none; /* Hidden on desktop */
+			font-size: 24px;
+			color: #555;
+			text-decoration: none;
+			position: absolute;
+			right: 20px;
+			top: 15px;
+		}
+
+		/* Dropdown Styles */
+		.dropbtn {
+			display: flex;
+			align-items: center;
+		}
+
+		.arrow {
+			border: solid #555;
+			border-width: 0 2px 2px 0;
+			display: inline-block;
+			padding: 3px;
+			margin-left: 8px;
+			transform: rotate(45deg);
+			-webkit-transform: rotate(45deg);
+			transition: transform 0.3s ease;
+		}
+
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			background-color: #f9f9f9;
+			min-width: 160px;
+			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+			z-index: 1;
+			border-radius: 6px;
+		}
+
+		.dropdown-content a {
+			color: black;
+			padding: 12px 16px;
+			text-decoration: none;
+			display: block;
+			text-align: left;
+		}
+
+		.dropdown-content a:hover {
+			background-color: #f1f1f1;
+		}
+
+		.dropdown:hover .dropdown-content {
+			display: block;
+		}
+
+		.dropdown:hover .arrow {
+			transform: rotate(-135deg);
+			-webkit-transform: rotate(-135deg);
+		}
+		
+		/* Flash Messages */
+		.flash {
+			padding: 15px;
+			margin-bottom: 20px;
+			border-radius: 8px;
+			font-weight: 500;
+			text-align: center;
+		}
+
+		.flash.success {
+			background-color: #d4edda;
+			color: #155724;
+			border: 1px solid #c3e6cb;
+		}
+
+		.flash.error {
+			background-color: #f8d7da;
+			color: #721c24;
+			border: 1px solid #f5c6cb;
+		}
+
+		/* Form Styling */
+		form {
+			background: #ffffff;
+			padding: 30px;
+			border-radius: 12px;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+			margin-top: 20px;
+		}
+
+		form h2 {
+			margin-top: 0;
+			margin-bottom: 20px;
+			color: #333;
+		}
+
+		.form-group {
+			margin-bottom: 20px;
+		}
+
+		.form-group label {
+			display: block;
+			margin-bottom: 8px;
+			font-weight: 600;
+			color: #555;
+		}
+
+		input[type="text"],
+		input[type="password"],
+		input[type="email"],
+		input[type="date"],
+		input[type="number"],
+		textarea,
+		select {
+			width: 100%;
+			padding: 12px;
+			border: 1px solid #ccc;
+			border-radius: 8px;
+			box-sizing: border-box; /* Important for padding and width */
+			transition: border-color 0.3s;
+		}
+
+		input[type="text"]:focus,
+		input[type="password"]:focus,
+		textarea:focus,
+		select:focus {
+			border-color: #4CAF50; /* Highlight color */
+			outline: none;
+		}
+
+		textarea {
+			resize: vertical;
+			min-height: 100px;
+		}
+
+		/* Button Styling */
+		button, input[type="submit"] {
+			background-color: #4CAF50; /* Primary button color */
+			color: white;
+			padding: 12px 20px;
+			border: none;
+			border-radius: 8px;
+			cursor: pointer;
+			font-size: 16px;
+			font-weight: 600;
+			width: 100%;
+			transition: background-color 0.3s;
+		}
+
+		button:hover, input[type="submit"]:hover {
+			background-color: #45a049; /* Darker shade on hover */
+		}
+
+		/* Card styling for profile, etc. */
+		.card {
+			background: #ffffff;
+			padding: 30px;
+			border-radius: 12px;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+			margin-top: 20px;
+		}
+
+		.card h2 {
+			margin-top: 0;
+			color: #4CAF50;
+		}
+
+		.game-container {
+			margin: 0;
+			overflow: hidden;
+			background: linear-gradient(to bottom, #1a1a2e, #16213e);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			min-height: 100vh;
+			font-family: Arial, sans-serif;
+		}
+
+		canvas {
+			border-radius: 10px;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+		}
+
+		.ui-container {
+			color: white;
+		}
+
+		.score {
+			font-size: 24px;
+			margin-bottom: 10px;
+		}
+
+		.controls {
+			background: rgba(255, 255, 255, 0.1);
+			padding: 10px;
+			border-radius: 5px;
+		}
+
+		/* Responsive Design */
+		@media (max-width: 768px) {
+			nav ul {
+				flex-direction: column;
+				align-items: flex-start;
+			}
+
+			nav ul li {
+				margin-left: 0;
+				margin-bottom: 10px;
+				width: 100%;
+			}
+
+			nav ul li a {
+				display: block;
+				text-align: left;
+			}
+			    
+			.dropdown .dropbtn {
+				width: 100%;
+				box-sizing: border-box;
+				justify-content: center; /* Center arrow on mobile */
+			}
+
+			.dropdown.active .dropdown-content {
+				display: block; /* Show on active */
+			}
+			
+			.dropdown.active .arrow {
+				transform: rotate(-135deg);
+				-webkit-transform: rotate(-135deg);
+			}
+		}
+	</style>
+	<nav>
+		<ul>
+			<li><a href="{{ url_for('index') }}">Home</a></li>
+			{% if 'user_id' in session %}
+				<li><a href="{{ url_for('chatbot_route') }}">Mindfulness Chatbot</a></li>
+				<li><a href="{{ url_for('mood_tracker') }}">Mood Tracker</a></li>
+				<li><a href="{{ url_for('visualization') }}">Mood Visualization</a></li>
+				<li><a href="{{ url_for('mindfulness') }}">Mindfulness Exercises</a></li>
+				<li class="dropdown">
+                    <a href="#" class="dropbtn">Games <span class="arrow"></span></a>
+                    <div class="dropdown-content">
+                        <a href="{{ url_for('game1') }}">Bubble Popping Game</a>
+                        <a href="{{ url_for('game2') }}">Mindful Cleaning Game</a>
+                    </div>
+                </li>
+				<li><a href="{{ url_for('resources') }}">Resources</a></li>
+				<li><a href="{{ url_for('profile') }}">Profile</a></li>
+				
+				<li><a href="{{ url_for('logout') }}">Logout</a></li>
+			{% else %}
+				<li><a href="{{ url_for('login3') }}">Login</a></li>
+				<li><a href="{{ url_for('register2') }}">Register</a></li>
+			{% endif %}
+		</ul>
+	</nav>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <div class="game-container">
+			<div class="ui-container">
+				<div class="score">Score: <span id="score">0</span></div>
+				<div class="controls">
+					Click or tap bubbles to pop them<br>
+					Move mouse to create waves
+				</div>
+			</div>
+			<canvas id="gameCanvas"></canvas>
+		</div>		
+    </div>
+	<script>
+		class Bubble {
+			constructor(x, y, radius) {
+				this.x = x;
+				this.y = y;
+				this.radius = radius;
+				this.baseRadius = radius;
+				this.targetRadius = radius;
+				this.dx = (Math.random() - 0.5) * 2;
+				this.dy = (Math.random() - 0.5) * 2;
+				this.color = this.generatePastelColor();
+				this.alpha = 0.7;
+				this.pulsePhase = Math.random() * Math.PI * 2;
+				this.pulseSpeed = 0.05;
+				this.distanceFromMouse = 0;
+			}
+	
+			generatePastelColor() {
+				const hue = Math.random() * 360;
+				return `hsla(${hue}, 70%, 80%, ${this.alpha})`;
+			}
+	
+			update(mouse, canvas) {
+				// Pulse effect
+				this.pulsePhase += this.pulseSpeed;
+				const pulseFactor = Math.sin(this.pulsePhase) * 0.1 + 1;
+				this.radius = this.baseRadius * pulseFactor;
+	
+				// Mouse interaction
+				if (mouse.x && mouse.y) {
+					const dx = mouse.x - this.x;
+					const dy = mouse.y - this.y;
+					this.distanceFromMouse = Math.sqrt(dx * dx + dy * dy);
+					
+					if (this.distanceFromMouse < 100) {
+						const angle = Math.atan2(dy, dx);
+						const force = (100 - this.distanceFromMouse) / 100;
+						this.dx -= Math.cos(angle) * force * 0.5;
+						this.dy -= Math.sin(angle) * force * 0.5;
+					}
+				}
+	
+				// Movement
+				this.x += this.dx;
+				this.y += this.dy;
+	
+				// Boundary collision
+				if (this.x < this.radius || this.x > canvas.width - this.radius) this.dx *= -0.8;
+				if (this.y < this.radius || this.y > canvas.height - this.radius) this.dy *= -0.8;
+	
+				// Friction
+				this.dx *= 0.99;
+				this.dy *= 0.99;
+			}
+	
+			draw(ctx) {
+				ctx.beginPath();
+				ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+				ctx.fillStyle = this.color;
+				ctx.fill();
+				
+				// Add shine effect
+				const gradient = ctx.createRadialGradient(
+					this.x - this.radius * 0.3, 
+					this.y - this.radius * 0.3, 
+					0, 
+					this.x, 
+					this.y, 
+					this.radius
+				);
+				gradient.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
+				gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+				ctx.fillStyle = gradient;
+				ctx.fill();
+			}
+	
+			isClicked(x, y) {
+				const distance = Math.sqrt((x - this.x) ** 2 + (y - this.y) ** 2);
+				return distance <= this.radius;
+			}
+		}
+	
+		class Game {
+			constructor() {
+				this.canvas = document.getElementById('gameCanvas');
+				this.ctx = this.canvas.getContext('2d');
+				this.score = 0;
+				this.scoreElement = document.getElementById('score');
+				this.bubbles = [];
+				this.mouse = { x: null, y: null };
+				this.lastSpawnTime = 0;
+				this.spawnInterval = 1000; // ms
+	
+				this.resizeCanvas();
+				this.setupEventListeners();
+				this.init();
+				this.animate();
+			}
+	
+			resizeCanvas() {
+				this.canvas.width = window.innerWidth * 0.8;
+				this.canvas.height = window.innerHeight * 0.8;
+			}
+	
+			setupEventListeners() {
+				window.addEventListener('resize', () => this.resizeCanvas());
+				
+				this.canvas.addEventListener('mousemove', (e) => {
+					const rect = this.canvas.getBoundingClientRect();
+					this.mouse.x = e.clientX - rect.left;
+					this.mouse.y = e.clientY - rect.top;
+				});
+	
+				this.canvas.addEventListener('touchmove', (e) => {
+					e.preventDefault();
+					const rect = this.canvas.getBoundingClientRect();
+					this.mouse.x = e.touches[0].clientX - rect.left;
+					this.mouse.y = e.touches[0].clientY - rect.top;
+				});
+	
+				this.canvas.addEventListener('click', (e) => {
+					const rect = this.canvas.getBoundingClientRect();
+					const x = e.clientX - rect.left;
+					const y = e.clientY - rect.top;
+					this.checkBubbleClick(x, y);
+				});
+	
+				this.canvas.addEventListener('touchend', (e) => {
+					const rect = this.canvas.getBoundingClientRect();
+					const x = e.changedTouches[0].clientX - rect.left;
+					const y = e.changedTouches[0].clientY - rect.top;
+					this.checkBubbleClick(x, y);
+				});
+			}
+	
+			init() {
+				// Initial bubbles
+				for (let i = 0; i < 20; i++) {
+					this.spawnBubble();
+				}
+			}
+	
+			spawnBubble() {
+				const radius = Math.random() * 20 + 20;
+				const x = Math.random() * (this.canvas.width - radius * 2) + radius;
+				const y = Math.random() * (this.canvas.height - radius * 2) + radius;
+				this.bubbles.push(new Bubble(x, y, radius));
+			}
+	
+			checkBubbleClick(x, y) {
+				for (let i = this.bubbles.length - 1; i >= 0; i--) {
+					if (this.bubbles[i].isClicked(x, y)) {
+						// Pop animation
+						this.createPopEffect(this.bubbles[i]);
+						this.bubbles.splice(i, 1);
+						this.score += 10;
+						this.scoreElement.textContent = this.score;
+						break;
+					}
+				}
+			}
+	
+			createPopEffect(bubble) {
+				const particles = [];
+				const numParticles = 8;
+				
+				for (let i = 0; i < numParticles; i++) {
+					const angle = (i / numParticles) * Math.PI * 2;
+					particles.push({
+						x: bubble.x,
+						y: bubble.y,
+						radius: bubble.radius / 4,
+						dx: Math.cos(angle) * 3,
+						dy: Math.sin(angle) * 3,
+						alpha: 1
+					});
+				}
+	
+				const animate = () => {
+					particles.forEach(particle => {
+						particle.x += particle.dx;
+						particle.y += particle.dy;
+						particle.alpha -= 0.02;
+						
+						if (particle.alpha > 0) {
+							this.ctx.beginPath();
+							this.ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+							this.ctx.fillStyle = `hsla(${Math.random() * 360}, 70%, 80%, ${particle.alpha})`;
+							this.ctx.fill();
+						}
+					});
+	
+					if (particles.some(p => p.alpha > 0)) {
+						requestAnimationFrame(animate);
+					}
+				};
+	
+				animate();
+			}
+	
+			animate() {
+				this.ctx.fillStyle = 'rgba(26, 26, 46, 0.2)';
+				this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+	
+				// Spawn new bubbles periodically
+				const currentTime = Date.now();
+				if (currentTime - this.lastSpawnTime > this.spawnInterval) {
+					this.spawnBubble();
+					this.lastSpawnTime = currentTime;
+				}
+	
+				this.bubbles.forEach(bubble => {
+					bubble.update(this.mouse, this.canvas);
+					bubble.draw(this.ctx);
+				});
+	
+				requestAnimationFrame(() => this.animate());
+			}
+		}
+	
+		// Start the game
+		new Game();
+	</script>
+</body>
+</html>
