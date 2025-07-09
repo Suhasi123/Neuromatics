@@ -1,11 +1,326 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Resources</h1>
+<!-- <h1>Resources</h1>
 <p>Here are some resources for improving your mental health(Check Links):</p>
 <ul>
     <li><a href="https://www.mentalhealth.gov">MentalHealth.gov &#8594;</a></li>
     <li><a href="https://www.nimh.nih.gov">National Institute of Mental Health &#8594;</a></li>
     <li><a href="https://www.who.int/mental_health">World Health Organization - Mental Health &#8594;</a></li>
-</ul>
+</ul> -->
+
+  <h1>MindCare Articles</h1>
+
+  <div class="articles-container">
+    <div class="articles-grid">
+    <!-- Article 1 -->
+    <div class="article-card">
+    <img src="https://plus.unsplash.com/premium_photo-1667762241847-37471e8c8bc0?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  alt="Mindfulness" class="article-image">
+      <p>Quick, effective mindfulness techniques you can do anywhere.</p>
+      <button class="read-more-btn" onclick="toggleContent('content1', this)">Read More</button>
+      <div class="full-content" id="content1">
+        <p>
+          Even if you’re busy, you can calm your mind in just 5 minutes. Try this:<br>
+          <ul>
+            <li>Breathe deeply: Inhale for 4 seconds, hold for 4, exhale for 4. Repeat 5 times.</li>
+            <li>5-4-3-2-1 Grounding: Name 5 things you see, 4 you can touch, 3 you hear, 2 you smell, and 1 you taste.</li>
+            <li>Mindful Pause: Sit still and focus on just one breath. Notice how it feels.<br></li>
+          </ul>
+          These quick pauses help reset your mind, improve focus, and reduce stress.
+        </p>
+      </div>
+    </div>
+
+    <!-- Article 2 -->
+    <div class="article-card">
+        <img src="https://images.unsplash.com/photo-1523495338267-31cbca7759e2?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Depression" class="article-image">
+      <h3>What Does Depression Really Feel Like?</h3>
+      <p>A gentle explanation of how depression shows up in real life.</p>
+      <button class="read-more-btn" onclick="toggleContent('content2', this)">Read More</button>
+      <div class="full-content" id="content2">
+        <p>
+          Depression isn’t always just sadness. It can feel like:<br>
+          <ul>
+            <li>Constant tiredness, even after sleep</li>
+            <li>Losing interest in things you used to enjoy</li>
+            <li>Feeling numb or empty</li>
+            <li>Difficulty focusing or making decisions</li>
+            <li>Feeling guilty or worthless</li>
+            <li>Physical symptoms like headaches or body aches<br></li>
+          </ul>
+          If this sounds familiar, you’re not alone. Reaching out for support is a strong first step toward healing.
+        </p>
+      </div>
+    </div>
+    </div>
+
+    <div class="articles-grid">
+    <!-- Article 3 -->
+    <div class="article-card">
+        <img src="https://plus.unsplash.com/premium_photo-1663100213985-212f6f1af5da?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Social_Media" class="article-image">
+      <h3>How to Do a Mental Detox from Social Media</h3>
+      <p>Easy ways to protect your mental health from screen fatigue.</p>
+      <button class="read-more-btn" onclick="toggleContent('content3', this)">Read More</button>
+      <div class="full-content" id="content3">
+        <p>
+          Social media can drain your focus and self-worth. Try a mental detox:<br>
+          <ul>
+            <li>Turn off notifications for a day</li>
+            <li>Replace 15 minutes of scrolling with a walk or music</li>
+            <li>Unfollow accounts that make you feel anxious</li>
+            <li>Don’t check your phone first thing in the morning</li>
+          </ul>
+          Small digital breaks help restore attention, reduce comparison, and improve mood.
+        </p>
+      </div>
+    </div>
+
+    <!-- Article 4 -->
+    <div class="article-card">
+        <img src="https://plus.unsplash.com/premium_photo-1736858062729-753a0c873b9f?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Poor_Sleep" class="article-image">
+      <h3>How Poor Sleep Affects Your Mood and Mind</h3>
+      <p>The powerful connection between rest and emotional health.</p>
+      <button class="read-more-btn" onclick="toggleContent('content4', this)">Read More</button>
+      <div class="full-content" id="content4">
+        <p>
+          Lack of sleep can make emotions harder to control. You might feel:<br>
+          <ul>
+            <li>Irritable or anxious</li>
+            <li>Less able to focus</li>
+            <li>More sensitive to stress</li>
+          </ul>
+          Sleep is when your brain organizes emotions and memories.<br>
+          Tips for better sleep:<br>
+          <ul>
+            <li>Keep a regular sleep schedule</li>
+            <li>Avoid screens 1 hour before bed</li>
+            <li>Create a calm bedtime routine</li>
+          </ul>
+          Protecting your sleep = protecting your mental health.
+        </p>
+      </div>
+    </div>
+    </div>
+
+    <div class="articles-grid">
+    <!-- Article 5 -->
+    <div class="article-card">
+        <img src="https://images.unsplash.com/photo-1667517258985-2df0d3264d74?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Self-Care" class="article-image">
+      <h3>Self-Care Isn’t Selfish: How to Set Boundaries</h3>
+      <p>Learn to protect your energy by saying “no” kindly.</p>
+      <button class="read-more-btn" onclick="toggleContent('content5', this)">Read More</button>
+      <div class="full-content" id="content5">
+        <p>
+          Self-care means making space for your well-being. A big part of that is setting boundaries:<br>
+          <ul>
+            <li>It's okay to say, “I can’t take this on right now.</li>
+            <li>You don’t owe anyone an explanation for resting.</li>
+            <li>Setting limits is not rude — it’s respectful to yourself.</li>
+          </ul>
+          When you protect your energy, you show up stronger in every part of life.
+        </p>
+      </div>
+    </div>
+
+    <!-- Article 6 -->
+    <div class="article-card">
+        <img src="https://plus.unsplash.com/premium_photo-1663050739359-a4261779f6ba?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Therapist" class="article-image">
+      <h3>When to See a Therapist: 5 Signs You Shouldn’t Ignore</h3>
+      <p>Knowing when it’s time to reach out for help.</p>
+      <button class="read-more-btn" onclick="toggleContent('content6', this)">Read More</button>
+      <div class="full-content" id="content6">
+        <p>
+          You don’t need to be “broken” to go to therapy. Here are signs you may benefit:<br>
+          <ul>
+            <li>You feel overwhelmed most days</li>
+            <li>You’ve lost interest in things you once enjoyed</li>
+            <li>You have trouble sleeping or eating</li>
+            <li>You avoid people or responsibilities</li>
+            <li>You feel stuck in negative thinking</li>
+          Talking to a professional can help you understand, heal, and grow.
+          </ul>
+        </p>
+      </div>
+    </div>
+    </div>
+
+    <div class="articles-grid">
+    <!-- Article 7 -->
+    <div class="article-card">
+        <img src="https://images.unsplash.com/photo-1716276872504-a248680d2537?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Stress" class="article-image">
+      <h3>The Science Behind Stress: Cortisol Explained</h3>
+      <p>A quick dive into the hormone that fuels your stress.</p>
+      <button class="read-more-btn" onclick="toggleContent('content7', this)">Read More</button>
+      <div class="full-content" id="content7">
+        <p>
+          When you're stressed, your body releases cortisol — the “fight or flight” hormone.  
+          It raises your heart rate, blood pressure, and alertness — helpful short-term, but harmful if constant.<br>
+          Chronic high cortisol leads to fatigue, anxiety, sleep problems, and even weight gain.<br>
+          You can lower cortisol by:<br>
+          <ul>
+            <li>Getting enough sleep</li>
+            <li>Exercising regularly</li>
+            <li>Practicing relaxation (like breathing or yoga)</li>
+          </ul>
+          Learning about stress helps you manage it better.
+        </p>
+      </div>
+    </div>
+
+    <!-- Article 8 -->
+    <div class="article-card">
+        <img src="https://images.unsplash.com/photo-1529485726363-95c8d62f656f?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Meditation" class="article-image">
+      <h3>How Meditation Helps Reduce Anxiety</h3>
+      <p>Why just sitting in silence can calm racing thoughts.</p>
+      <button class="read-more-btn" onclick="toggleContent('content8', this)">Read More</button>
+      <div class="full-content" id="content8">
+        <p>
+          Meditation trains your brain to stay present. When you sit quietly and focus on your breath or body, your mind slows down.<br>
+          Studies show regular meditation reduces amygdala activity — the part of your brain that triggers fear.<br>
+          Just 10 minutes a day can:<br>
+          <ul>
+            <li>Lower anxiety</li>
+            <li>Improve concentration</li>
+            <li>Reduce negative thought spirals</li>
+          </ul>
+          Meditation isn’t about clearing your mind, it’s about not reacting to every thought.
+        </p>
+      </div>
+    </div>
+    </div>
+
+    <div class="articles-grid">
+    <!-- Article 9 -->
+    <div class="article-card">
+        <img src="https://images.unsplash.com/photo-1569360556894-15dca0c6ff1a?q=80&w=736&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Journaling" class="article-image">
+      <h3>Journaling for Mental Clarity: A 5-Minute Habit</h3>
+      <p>Clear your mind by writing things down — no rules needed.</p>
+      <button class="read-more-btn" onclick="toggleContent('content9', this)">Read More</button>
+      <div class="full-content" id="content9">
+        <p>
+          Journaling is like talking to your inner self. It doesn’t need to be perfect — just grab a pen and write.<br>
+          You can:<br>
+          <ul>
+            <li>Dump all your thoughts to reduce overthinking</li>
+            <li>Track your mood or triggers</li>
+            <li>Write 3 things you're grateful for</li>
+          </ul>
+          Try journaling for just 5 minutes daily. Over time, it helps you understand patterns in your thoughts and emotions, giving you better control over your mind.
+        </p>
+      </div>
+    </div>
+
+    <!-- Article 10 -->
+    <div class="article-card">
+        <img src="https://plus.unsplash.com/premium_photo-1664268415679-e16cfbd3f1ee?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Creative" class="article-image">
+      <h3>Creative Activities to Boost Mental Health</h3>
+      <p>Art, music, and expression aren’t hobbies — they’re healing tools.</p>
+      <button class="read-more-btn" onclick="toggleContent('content10', this)">Read More</button>
+      <div class="full-content" id="content10">
+        <p>
+          Being creative isn’t just for artists. Activities like painting, dancing, or playing music help release emotions, reduce anxiety, and boost dopamine.<br>
+          <ul>
+            <li>Draw your feelings — no one has to see it<br></li>
+            <li>Make a playlist that lifts your mood</li>
+            <li>Try coloring or doodling while listening to calm music<br></li>
+          </ul>
+          These little actions give your brain a break and connect you with joy. Mental wellness is about expression, not just control.
+        </p>
+      </div>
+    </div>
+    </div>
+  </div>
+
+<style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f7fa;
+      padding: 20px;
+      margin: 0;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #2e3a59;
+    }
+
+    .articles-container {
+      max-width: 850px;
+    }
+
+    .articles-grid {
+        display: grid;
+        width: 1440px;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 20px;
+    }
+
+    .article-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 40px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      margin-bottom: 20px;
+      margin-right: 20px;
+      
+    }
+
+    .article-image {
+        width: 500px;
+        height: 200px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        object-fit: cover;
+    }
+    .article-card h3 {
+      margin-top: 0;
+      color: #374785;
+    }
+
+    .article-card p {
+      color: #4f4f4f;
+    }
+
+    .read-more-btn {
+      background-color: #5c7aea;
+      border: none;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .read-more-btn:hover {
+      background-color: #445bc0;
+    }
+
+    .full-content {
+      display: none;
+      margin-top: 10px;
+      color: #333;
+    }
+
+    @media (max-width: 600px) {
+      .article-card {
+        padding: 15px;
+      }
+    }
+  </style>
+
+<script>
+  function toggleContent(id, btn) {
+    var content = document.getElementById(id);
+    if (content.style.display === "block") {
+      content.style.display = "none";
+      btn.textContent = "Read More";
+    } else {
+      content.style.display = "block";
+      btn.textContent = "Read Less";
+    }
+  }
+</script>
+
+
 {% endblock %}

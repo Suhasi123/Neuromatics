@@ -120,6 +120,10 @@ def mindfulness():
 def resources():
     return render_template('resources.html')
 
+@app.route("/breathing")
+def breathing():
+    return render_template("breathing.html")
+
 @app.route('/game1')
 def game1():
 	return render_template('game1.html')
