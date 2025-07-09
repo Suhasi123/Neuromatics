@@ -32,3 +32,19 @@
 
 - **🎵 Background Music**
   - Calming music for a peaceful app experience.
+
+Follow these steps to run the project locally:
+
+1️⃣ Clone the repository:
+
+git clone <repository-url>
+
+2️⃣ Navigate to the project directory:
+
+cd MentalHealth/src
+
+3️⃣ Run the application:
+
+python app.py
+
+The application should now be running locally on http://127.0.0.1:5000 or your specified Flask port.
