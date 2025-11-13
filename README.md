@@ -36,7 +36,7 @@ Follow these steps to run the project locally:
 
 1 Clone the repository:
 
-git clone https://github.com/Suhasi123/Neuromatics.git
+git clone https://github.com/SAINATH537/Neuromatics.git
 
 2️ Navigate to the project directory:
 
